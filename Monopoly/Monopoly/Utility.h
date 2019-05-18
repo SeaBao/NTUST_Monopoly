@@ -8,3 +8,4 @@ size_t Split(const std::wstring& txt, std::vector<std::wstring>& strs, wchar_t c
 void SetCursorPosistion(int x, int y);
 void SetWindow(int Width, int Height);
 void ShowConsoleCursor(bool showFlag);
+COORD GetCursorPosition();

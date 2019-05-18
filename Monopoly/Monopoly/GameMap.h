@@ -1,6 +1,7 @@
 #pragma once
 #include "Location.h"
 #include "Player.h"
+#include <Windows.h>
 #include <memory>
 #include <vector>
 #include <string>
@@ -14,6 +15,7 @@ public:
 	void ReadMap(string path);
 	void WriteMap(string path);
 	void PrintMap();
+	COORD GetCoordByPos(short pos);
 
 	wstring Name;
 private:

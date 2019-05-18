@@ -52,3 +52,16 @@ void ShowConsoleCursor(bool showFlag)
 	cursorInfo.bVisible = showFlag;
 	SetConsoleCursorInfo(out, &cursorInfo);
 }
+
+COORD GetCursorPosition() {
+	CONSOLE_SCREEN_BUFFER_INFO cbsi;
+	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cbsi))
+	{
+		return cbsi.dwCursorPosition;
+	}
+	else
+	{
+		COORD invalid = { -1, -1 };
+		return invalid;
+	}
+}

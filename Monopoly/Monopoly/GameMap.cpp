@@ -110,7 +110,7 @@ void GameMap::PrintMap()
 	auto cuurentPos = GetCursorPosition();
 	ShowConsoleCursor(false);
 
-	int maxWidth = 88, maxHeight = 34;
+	int maxWidth = 88 + 8, maxHeight = 34;
 
 	for (int y = 0; y <= maxHeight; y++) {
 		for (int x = 0; x <= maxWidth; x+=2) {
@@ -153,7 +153,7 @@ void GameMap::PrintMap()
 			SetCursorPosistion(x, y);
 
 			if (row == 1 || row == 9) {
-				if (x % 11 == 0) {
+				if (x % 12 == 0) {
 					wcout << (row == 1 ? L"┬" : L"┴");
 				}
 				else {
@@ -162,10 +162,10 @@ void GameMap::PrintMap()
 				
 			}
 			else {
-				if (x == 11) {
+				if (x == 12) {
 					wcout << L"┤";
 				}
-				else if (x == maxWidth - 2 - 9) {
+				else if (x == maxWidth - 2 - 10) {
 					wcout << L"├";
 				}
 				else if (x < 12 || x > maxWidth - 2 - 10 || row == 2 || row == 8) {
@@ -176,7 +176,7 @@ void GameMap::PrintMap()
 		}
 	}
 
-	for (int x = 11, col= 1; x <= maxWidth - 11; x += 11, col++) {
+	for (int x = 2 + 10, col= 1; x <= maxWidth - 12; x += 12, col++) {
 		for (int y = startY + 1; y < startY + 4 * 8; y++) {
 			SetCursorPosistion(x, y);
 			if (col == 1 || col == 7) {
@@ -198,11 +198,11 @@ void GameMap::PrintMap()
 	
 	for (size_t i = 0; i < LocationList.size(); i++) {
 		auto coord = GetCoordByPos(LocationList[i].get()->Position);
-		SetCursorPosistion(coord.X + 4 - LocationList[i].get()->Name.length(), coord.Y);
+		SetCursorPosistion(coord.X + 5 - LocationList[i].get()->Name.length(), coord.Y);
 		wcout << LocationList[i].get()->Name;
 		
 		SetCursorPosistion(coord.X, coord.Y + 1);
-		wcout << L" : :: :";
+		wcout << L"  : :: :";
 	}
 	ShowConsoleCursor(true);
 	SetCursorPosistion(cuurentPos.X, cuurentPos.Y);
@@ -214,13 +214,13 @@ COORD GameMap::GetCoordByPos(short pos)
 		return { 2 ,2 + pos * 4 };
 	}
 	else if (pos > 7 && pos <= 14) {
-		return { 2 + (pos - 7) * 11 , 2 + 7 * 4};
+		return { 2 + (pos - 7) * 12 , 2 + 7 * 4};
 	}
 	else if (pos > 14 && pos <= 21) {
-		return { 2 + 7 * 11 , 2 + (7 - pos + 14) * 4 };
+		return { 2 + 7 * 12 , 2 + (7 - pos + 14) * 4 };
 	}
 	else if (pos <= 27) {
-		return { 2 + (7 - pos + 21) * 11, 2 };
+		return { 2 + (7 - pos + 21) * 12, 2 };
 	}
 	else {
 		throw exception("Invalid Coordinate.");

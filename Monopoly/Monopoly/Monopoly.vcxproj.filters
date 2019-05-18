@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="來源檔案\Objects">
+      <UniqueIdentifier>{273f70d5-9b4f-4a4a-a4e8-f494f4ce1bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\Objects">
+      <UniqueIdentifier>{816b0a92-9571-440f-8f4c-f9ddaf0bc670}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -20,6 +26,24 @@
     </ClCompile>
     <ClCompile Include="Utility.cpp">
       <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMap.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="Estate.cpp">
+      <Filter>來源檔案\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Location.cpp">
+      <Filter>來源檔案\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Chance.cpp">
+      <Filter>來源檔案\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Destiny.cpp">
+      <Filter>來源檔案\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +54,24 @@
   <ItemGroup>
     <ClInclude Include="Utility.h">
       <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMap.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Chance.h">
+      <Filter>標頭檔\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Destiny.h">
+      <Filter>標頭檔\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Estate.h">
+      <Filter>標頭檔\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Location.h">
+      <Filter>標頭檔\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

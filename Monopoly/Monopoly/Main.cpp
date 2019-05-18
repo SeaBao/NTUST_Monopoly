@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <iostream>
+#include "GameMap.h"
 #include "Utility.h"
 using namespace std;
 
@@ -22,5 +23,11 @@ int main() {
 	cfi.FontFamily = FF_DONTCARE;
 	cfi.FontWeight = FW_NORMAL;
 	SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
+
+	GameMap map;
+	map.ReadMap("Basemap.txt");
+	map.PrintMap();
+
+	cin.get();
 	return 0;
 }

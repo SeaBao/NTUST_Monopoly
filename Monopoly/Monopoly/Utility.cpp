@@ -9,13 +9,13 @@ void SetCursorPosistion(int x, int y) {
 	SetConsoleCursorPosition(hOut, Position);
 }
 
-size_t Split(const std::string& txt, std::vector<std::string>& strs, char ch)
+size_t Split(const std::wstring& txt, std::vector<std::wstring>& strs, wchar_t ch)
 {
 	size_t pos = txt.find(ch);
 	size_t initialPos = 0;
 	strs.clear();
 
-	while (pos != std::string::npos) {
+	while (pos != std::wstring::npos) {
 		strs.push_back(txt.substr(initialPos, pos - initialPos));
 		initialPos = pos + 1;
 

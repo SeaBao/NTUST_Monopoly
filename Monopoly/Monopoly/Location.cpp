@@ -6,3 +6,8 @@ Location::Location(wstring name, LocType type, int pos)
 	Position = pos;
 	Type = type;
 }
+
+bool Location::operator<(const Location& loc) const
+{
+	return Position < loc.Position;
+}

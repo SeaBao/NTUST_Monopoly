@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-	int WindowHeight = 35, WindowWidth = 100;
+	int WindowHeight = 44, WindowWidth = 88;
 	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	HWND consoleWindow = GetConsoleWindow();
 

@@ -3,6 +3,7 @@
 #include "Chance.h"
 #include "Destiny.h"
 #include "Estate.h"
+#include <iostream>
 #include <fstream>
 
 GameMap::GameMap()
@@ -106,6 +107,94 @@ void GameMap::WriteMap(string path)
 
 void GameMap::PrintMap()
 {
+	ShowConsoleCursor(false);
+
+	int maxWidth = 88, maxHeight = 44;
+
+	for (int y = 0; y <= maxHeight; y++) {
+		for (int x = 0; x <= maxWidth; x+=2) {
+			SetCursorPosistion(x, y);
+
+			if (y == 0) {
+				if (x == 0) {
+					wcout << L"ùÝ ";
+				}
+				else if (x == maxWidth) {
+					wcout << L"ùß ";
+				}
+				else {
+					wcout << L"ùù ";
+				}
+				
+			}
+			else if (y == maxHeight) {
+				if (x == 0) {
+					wcout << L"ùã ";
+				}
+				else if (x == maxWidth) {
+					wcout << L"ùå ";
+				}
+				else {
+					wcout << L"ùù ";
+				}
+			}
+			else {
+				if (x == 0 || x == maxWidth) {
+					wcout << L"ùø ";
+				}
+			}
+		}
+	}
+
+	int startY = 6;
+	for (int y = startY, row = 1; y < startY + 4 * 9; y+=4, row++) {
+		for (int x = 2; x <= maxWidth - 2; x++) {
+			SetCursorPosistion(x, y);
+
+			if (row == 1 || row == 9) {
+				if (x % 11 == 0) {
+					wcout << (row == 1 ? L"¢s" : L"¢r");
+				}
+				else {
+					wcout << L"¢w";
+				}
+				
+			}
+			else {
+				if (x == 11) {
+					wcout << L"¢t";
+				}
+				else if (x == maxWidth - 2 - 9) {
+					wcout << L"¢u";
+				}
+				else if (x < 12 || x > maxWidth - 2 - 10 || row == 2 || row == 8) {
+					wcout << L"¢w";
+				}
+			}
+			
+		}
+	}
+
+	for (int x = 11, col= 1; x <= maxWidth - 11; x += 11, col++) {
+		for (int y = startY + 1; y < startY + 4 * 8; y++) {
+			SetCursorPosistion(x, y);
+			if (col == 1 || col == 7) {
+				wcout << L"¢x";
+			}
+			else {
+				if ((y - startY + 2) / 6 >= 1 && (y - startY + 1) / 6 <= 4) {
+
+				}
+				else {
+					wcout << L"¢x";
+				}
+				
+			}
+		}
+	}
+
+	SetCursorPosistion(2, 2);
+	ShowConsoleCursor(true);
 }
 
 Player& GameMap::GetCurrentPlayer()

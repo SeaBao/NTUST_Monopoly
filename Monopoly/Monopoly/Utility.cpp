@@ -18,6 +18,15 @@ size_t Split(const std::wstring& txt, std::vector<std::wstring>& strs, wchar_t c
 	return strs.size();
 }
 
+void SetCursorPosistion(int x, int y) {
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD Position;
+	Position.X = x;
+	Position.Y = y;
+	SetConsoleCursorPosition(hOut, Position);
+}
+
 void SetWindow(int Width, int Height)
 {
 	_COORD coord;

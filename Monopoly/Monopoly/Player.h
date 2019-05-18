@@ -3,11 +3,14 @@
 #include <vector>
 using namespace std;
 
+
 struct Property
 {
 	Estate Estate;
 	int Level = 0;
 };
+
+
 
 class Player
 {
@@ -20,4 +23,3 @@ public:
 	
 	vector<Property> OwnedProperties;
 };
-

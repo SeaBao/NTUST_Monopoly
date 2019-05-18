@@ -249,6 +249,17 @@ COORD GameMap::GetCoordByPos(short pos)
 	}
 }
 
+Player& GameMap::GetOwnerByEstate(const Estate& e)
+{
+	for (Player p : PlayerList) {
+		for (auto item : p.OwnedProperties) {
+			if (e.Name == item.Estate.Name) {
+				return p;
+			}
+		}
+	}
+}
+
 Player& GameMap::GetCurrentPlayer()
 {
 	return PlayerList[_CurrentPlayerID];

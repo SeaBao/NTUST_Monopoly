@@ -16,8 +16,10 @@ public:
 	void WriteMap(string path);
 	void PrintMap();
 	void RefreshPlayerLocation();
-	COORD GetCoordByPos(short pos);
 
+
+	COORD GetCoordByPos(short pos);
+	Player& GetOwnerByEstate(const Estate& e);
 	wstring Name;
 private:
 	int RemainingRounds;

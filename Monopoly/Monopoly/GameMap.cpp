@@ -109,7 +109,7 @@ void GameMap::PrintMap()
 {
 	ShowConsoleCursor(false);
 
-	int maxWidth = 88, maxHeight = 44;
+	int maxWidth = 88, maxHeight = 34;
 
 	for (int y = 0; y <= maxHeight; y++) {
 		for (int x = 0; x <= maxWidth; x+=2) {
@@ -146,7 +146,7 @@ void GameMap::PrintMap()
 		}
 	}
 
-	int startY = 6;
+	int startY = 1;
 	for (int y = startY, row = 1; y < startY + 4 * 9; y+=4, row++) {
 		for (int x = 2; x <= maxWidth - 2; x++) {
 			SetCursorPosistion(x, y);

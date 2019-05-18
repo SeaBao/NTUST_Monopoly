@@ -48,6 +48,9 @@
     <ClCompile Include="InfoPanel.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="OperatingPlayers.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Basemap.txt">
@@ -77,6 +80,9 @@
       <Filter>標頭檔\Objects</Filter>
     </ClInclude>
     <ClInclude Include="InfoPanel.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="OperatingPlayers.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

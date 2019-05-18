@@ -1,14 +1,5 @@
 #include "Utility.h"
 
-void SetCursorPosistion(int x, int y) {
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD Position;
-	Position.X = x;
-	Position.Y = y;
-	SetConsoleCursorPosition(hOut, Position);
-}
-
 size_t Split(const std::wstring& txt, std::vector<std::wstring>& strs, wchar_t ch)
 {
 	size_t pos = txt.find(ch);

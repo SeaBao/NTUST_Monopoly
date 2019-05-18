@@ -15,6 +15,7 @@ public:
 	void ReadMap(string path);
 	void WriteMap(string path);
 	void PrintMap();
+	void RefreshPlayerLocation();
 	COORD GetCoordByPos(short pos);
 
 	wstring Name;
@@ -28,4 +29,6 @@ private:
 	vector<unique_ptr<Location>> LocationList;
 	vector<Player> PlayerList;
 };
+
+extern GameMap TheMap;
 

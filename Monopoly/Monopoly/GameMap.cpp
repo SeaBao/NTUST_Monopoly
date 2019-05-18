@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 
+GameMap TheMap;
+
 GameMap::GameMap()
 {
 	Name = L"";
@@ -21,7 +23,7 @@ void GameMap::ReadMap(string path)
 	file.open(path);
 
 	if (file.is_open()) {
-		int rows = 0, currentPlayerID;
+		int rows = 0;
 		bool isFinishLoadingLocation = false;
 		wstring line;
 		while (getline(file, line)) {
@@ -78,7 +80,7 @@ void GameMap::ReadMap(string path)
 					player.Money = stoi(splitStrArr[2]);
 
 					if (splitStrArr.size() > 3) {
-						for (int i = 3; i < splitStrArr.size(); i += 2) {
+						for (size_t i = 3; i < splitStrArr.size(); i += 2) {
 							Property property;
 							property.Estate = GetEstateByID(stoi(splitStrArr[i]));
 							property.Level = stoi(splitStrArr[i + 1]);
@@ -200,12 +202,32 @@ void GameMap::PrintMap()
 		auto coord = GetCoordByPos(LocationList[i].get()->Position);
 		SetCursorPosistion(coord.X + 5 - LocationList[i].get()->Name.length(), coord.Y);
 		wcout << LocationList[i].get()->Name;
-		
-		SetCursorPosistion(coord.X, coord.Y + 1);
-		wcout << L"  : :: :";
 	}
+
+	RefreshPlayerLocation();
 	ShowConsoleCursor(true);
 	SetCursorPosistion(cuurentPos.X, cuurentPos.Y);
+}
+
+void GameMap::RefreshPlayerLocation() {
+	const int clrSelection[4] = { FOREGROUND_BLUE, FOREGROUND_GREEN, FOREGROUND_RED, FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY };
+	for (int i = 0; i < LocationList.size(); i++) {
+		auto loc = LocationList[i].get();
+		auto coord = GetCoordByPos(loc->Position);
+		vector<Player> tempList;
+
+		SetCursorPosistion(coord.X + 1, coord.Y + 1);
+		wcout << L" : :: :";
+
+		for (Player player : PlayerList) {
+			if (player.Position == loc->Position) {
+				SetCursorPosistion(1 + coord.X + 2 * player.ID + (player.ID > 1 ? 1 : 0), coord.Y + 1);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), clrSelection[player.ID]);
+				wcout << to_wstring(player.ID + 1);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+			}
+		}
+	}
 }
 
 COORD GameMap::GetCoordByPos(short pos)

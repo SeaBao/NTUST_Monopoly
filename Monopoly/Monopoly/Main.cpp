@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-	int WindowHeight = 35, WindowWidth = 130;
+	int WindowHeight = 35, WindowWidth = 140;
 	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	HWND consoleWindow = GetConsoleWindow();
 
@@ -19,15 +19,14 @@ int main() {
 	cfi.cbSize = sizeof(cfi);
 	cfi.nFont = 0;
 	cfi.dwFontSize.X = 0;
-	cfi.dwFontSize.Y = 18;
+	cfi.dwFontSize.Y = 20;
 	cfi.FontFamily = FF_DONTCARE;
 	cfi.FontWeight = FW_NORMAL;
 	SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
 
-	GameMap map;
-	map.ReadMap("Basemap.txt");
-	map.PrintMap();
-
+	TheMap.ReadMap("Basemap.txt");
+	TheMap.PrintMap();
+	SetCursorPosistion(98, 1);
 	cin.get();
 	return 0;
 }

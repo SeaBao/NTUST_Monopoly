@@ -2,4 +2,7 @@
 
 Player::Player()
 {
+	Position = -1;
+	Money = -1;
+	ID = -1;
 }

@@ -278,6 +278,11 @@ Player& GameMap::GetOwnerByEstate(const Estate& e)
 	}
 }
 
+Player& GameMap::GetOwnerByEstate(int pos)
+{
+	return GetOwnerByEstate(GetEstateByID(pos));
+}
+
 int GameMap::GetLocationCount()
 {
 	return LocationList.size();

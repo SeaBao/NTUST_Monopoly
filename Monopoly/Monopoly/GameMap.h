@@ -22,6 +22,7 @@ public:
 	COORD GetCoordByPos(short pos);
 	Estate& GetEstateFromPos(int pos);
 	Player& GetOwnerByEstate(const Estate& e);
+	Player& GetOwnerByEstate(int pos);
 	Player& GetCurrentPlayer();
 	int GetLocationCount();
 	vector<reference_wrapper<Player>> GetPlayersFromLocation(const Location& loc);

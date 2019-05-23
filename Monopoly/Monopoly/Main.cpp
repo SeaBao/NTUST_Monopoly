@@ -29,7 +29,6 @@ int main() {
 	TheMap.PrintMap();
 	SetCursorPosistion(98, 1);
 
-	auto item = TheMap.GetEstateFromPos(0);
 	OperatingPlayers start;
 	start.GameStart();
 	

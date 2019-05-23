@@ -17,9 +17,12 @@ public:
 	void PrintMap();
 	void RefreshPlayerLocation();
 	int GetMaxPlayers();
+	int GetRemainingRounds();
+
 	COORD GetCoordByPos(short pos);
 	Estate& GetEstateFromPos(int pos);
 	Player& GetOwnerByEstate(const Estate& e);
+	Player& GetCurrentPlayer();
 	int GetLocationCount();
 	vector<reference_wrapper<Player>> GetPlayersFromLocation(const Location& loc);
 	vector<reference_wrapper<Player>> GetPlayersFromLocation(int pos);
@@ -32,8 +35,7 @@ private:
 	int RemainingRounds;
 	int MaxPlayers;
 	int _CurrentPlayerID;
-
-	Player& GetCurrentPlayer();
+	
 	Estate& GetEstateByID(int ID);
 	vector<unique_ptr<Location>> LocationList;
 	

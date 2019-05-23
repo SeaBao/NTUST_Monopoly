@@ -235,6 +235,11 @@ int GameMap::GetMaxPlayers()
 	return MaxPlayers;
 }
 
+int GameMap::GetRemainingRounds()
+{
+	return RemainingRounds;
+}
+
 COORD GameMap::GetCoordByPos(short pos)
 {
 	if (pos <= 7) {

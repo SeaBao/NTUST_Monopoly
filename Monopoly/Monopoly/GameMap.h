@@ -26,7 +26,7 @@ public:
 	wstring Name;
 private:
 	int RemainingRounds;
-	int _MaxPlayers;
+	int MaxPlayers;
 	int _CurrentPlayerID;
 
 	Player& GetCurrentPlayer();

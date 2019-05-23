@@ -232,7 +232,7 @@ void GameMap::RefreshPlayerLocation() {
 
 int GameMap::GetMaxPlayers()
 {
-	return _MaxPlayers;
+	return MaxPlayers;
 }
 
 COORD GameMap::GetCoordByPos(short pos)

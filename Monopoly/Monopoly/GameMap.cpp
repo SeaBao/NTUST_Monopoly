@@ -273,6 +273,11 @@ Player& GameMap::GetOwnerByEstate(const Estate& e)
 	}
 }
 
+int GameMap::GetLocationCount()
+{
+	return LocationList.size();
+}
+
 vector<reference_wrapper<Player>> GameMap::GetPlayersFromLocation(const Location& loc)
 {
 	return GetPlayersFromLocation(loc.Position);
@@ -287,6 +292,27 @@ vector<reference_wrapper<Player>> GameMap::GetPlayersFromLocation(int pos)
 	}
 
 	return result;
+}
+
+void GameMap::TurnNextRound()
+{
+	if (RemainingRounds == 0) return;
+
+	int index = -1;
+	for (int i = 0; i < PlayerList.size(); i++) {
+		if (PlayerList[i].ID == _CurrentPlayerID) index = i;
+	}
+
+	if (index == -1) throw exception("Wrong Player ID");
+
+	if (index + 1 >= PlayerList.size()) {
+		_CurrentPlayerID = PlayerList[0].ID;
+	}
+	else {
+		_CurrentPlayerID = PlayerList[index + 1].ID;
+	}
+
+	RemainingRounds -= 1;
 }
 
 Player& GameMap::GetCurrentPlayer()

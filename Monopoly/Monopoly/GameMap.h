@@ -20,9 +20,13 @@ public:
 	COORD GetCoordByPos(short pos);
 	Estate& GetEstateFromPos(int pos);
 	Player& GetOwnerByEstate(const Estate& e);
+	int GetLocationCount();
 	vector<reference_wrapper<Player>> GetPlayersFromLocation(const Location& loc);
 	vector<reference_wrapper<Player>> GetPlayersFromLocation(int pos);
 
+	void TurnNextRound();
+
+	vector<Player> PlayerList;
 	wstring Name;
 private:
 	int RemainingRounds;
@@ -32,7 +36,7 @@ private:
 	Player& GetCurrentPlayer();
 	Estate& GetEstateByID(int ID);
 	vector<unique_ptr<Location>> LocationList;
-	vector<Player> PlayerList;
+	
 };
 
 extern GameMap TheMap;

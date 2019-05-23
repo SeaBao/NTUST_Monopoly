@@ -18,10 +18,18 @@ void OperatingPlayers::GameStart()
 	SetConsoleCursorPosition(hOut, Position);
 
 	wcout << L"現在輪到 "<< (turn % TheMap.GetMaxPlayers())+1 <<L"玩家擲骰子，請按任意鍵擲骰子";
-	command = _getch();
+	
 	while (command != EOF)
 	{
-		
+		if (turn != 0)
+		{
+			
+			Position.X = 15;
+			Position.Y = 10;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"現在輪到 " << (turn % TheMap.GetMaxPlayers()) + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+			command = _getch();
+		}
 		srand(static_cast<int>(time(NULL)));
 		Position.X = 15;
 		Position.Y = 12;
@@ -44,11 +52,13 @@ void OperatingPlayers::GameStart()
 
 		}
 		turn++;
-		Position.X = 15;
-		Position.Y = 10;
-		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"現在輪到 " << (turn % TheMap.GetMaxPlayers()) + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+		wcout << L"      請按任意鍵繼續...";
 		command = _getch();
+		Position.X = 15;
+		Position.Y = 12;
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << "                                                      ";
+	
 	}
 }
 

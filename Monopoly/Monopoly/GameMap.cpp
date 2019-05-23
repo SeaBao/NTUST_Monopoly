@@ -308,6 +308,13 @@ void GameMap::TurnNextRound()
 {
 	if (RemainingRounds == 0) return;
 
+	if (GetCurrentPlayer().Money < 0) {
+		GetCurrentPlayer().Stop = -1;
+	}
+	else {
+		GetCurrentPlayer().Stop = RemainingRounds;
+	}
+
 	int index = -1;
 	for (int i = 0; i < PlayerList.size(); i++) {
 		if (PlayerList[i].ID == _CurrentPlayerID) index = i;

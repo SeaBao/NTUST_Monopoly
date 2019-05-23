@@ -20,6 +20,7 @@ public:
 	int ID;
 	int Money;
 	int Position;
+	int Stop;
 	
 	vector<Property> OwnedProperties;
 };

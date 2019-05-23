@@ -16,6 +16,7 @@ public:
 	void WriteMap(string path);
 	void PrintMap();
 	void RefreshPlayerLocation();
+	int GetMaxPlayers();
 	COORD GetCoordByPos(short pos);
 	Estate& GetEstateFromPos(int pos);
 	Player& GetOwnerByEstate(const Estate& e);
@@ -25,7 +26,7 @@ public:
 	wstring Name;
 private:
 	int RemainingRounds;
-	int MaxPlayers;
+	int _MaxPlayers;
 	int _CurrentPlayerID;
 
 	Player& GetCurrentPlayer();

@@ -230,6 +230,11 @@ void GameMap::RefreshPlayerLocation() {
 	}
 }
 
+int GameMap::GetMaxPlayers()
+{
+	return _MaxPlayers;
+}
+
 COORD GameMap::GetCoordByPos(short pos)
 {
 	if (pos <= 7) {

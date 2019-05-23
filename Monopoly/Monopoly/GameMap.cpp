@@ -78,6 +78,7 @@ void GameMap::ReadMap(string path)
 					player.ID = stoi(splitStrArr[0]);
 					player.Position = stoi(splitStrArr[1]);
 					player.Money = stoi(splitStrArr[2]);
+					player.Stop = RemainingRounds;
 
 					if (splitStrArr.size() > 3) {
 						for (size_t i = 3; i < splitStrArr.size(); i += 2) {
@@ -322,11 +323,23 @@ void GameMap::TurnNextRound()
 
 	if (index == -1) throw exception("Wrong Player ID");
 
-	if (index + 1 >= PlayerList.size()) {
-		_CurrentPlayerID = PlayerList[0].ID;
+	bool isFound = false;
+	for (int i = index + 1; i < PlayerList.size(); i++) {
+		if (PlayerList[i].Stop != -1) {
+			_CurrentPlayerID = PlayerList[i].ID;
+			isFound = true;
+			break;
+		}
 	}
-	else {
-		_CurrentPlayerID = PlayerList[index + 1].ID;
+
+	if (!isFound) {
+		for (int i = 0; i < index; i++) {
+			if (PlayerList[i].Stop != -1) {
+				_CurrentPlayerID = PlayerList[i].ID;
+				isFound = true;
+				break;
+			}
+		}
 	}
 
 	RemainingRounds -= 1;

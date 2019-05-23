@@ -20,5 +20,6 @@ public:
 	int Position;
 
 	bool operator<(const Location& loc) const;
+	bool operator==(const Location& loc) const;
 };
 

@@ -11,3 +11,8 @@ bool Location::operator<(const Location& loc) const
 {
 	return Position < loc.Position;
 }
+
+bool Location::operator==(const Location& loc) const
+{
+	return (Name == loc.Name && Position == loc.Position);
+}

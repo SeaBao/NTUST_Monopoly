@@ -2,6 +2,7 @@
 #include <iostream>
 #include "GameMap.h"
 #include "Utility.h"
+#include"OperatingPlayers.h"
 using namespace std;
 
 int main() {
@@ -27,6 +28,7 @@ int main() {
 	TheMap.ReadMap("Basemap.txt");
 	TheMap.PrintMap();
 	SetCursorPosistion(98, 1);
-	cin.get();
+	OperatingPlayers start;
+	start.GameStart();
 	return 0;
 }

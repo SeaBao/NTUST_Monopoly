@@ -11,11 +11,16 @@ OperatingPlayers::OperatingPlayers()
 void OperatingPlayers::GameStart()
 {
 	GameMap temp;
-
-	cout << "現在輪到 "<< (turn % 4 )+1 <<"玩家擲骰子，請按任意鍵擲骰子";
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD Position;
+	Position.X = 15;
+	Position.Y = 10;
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L"現在輪到 "<< (turn % 4 )+1 <<L"玩家擲骰子，請按任意鍵擲骰子";
 	while (command != EOF)
 	{
-		cout << "擲出的點數為 " << (rand() % 6) + 1 << " 點";
+		wcout << L"擲出的點數為 " << (rand() % 6) + 1 << L" 點";
 		if ((turn % 4) + 1 == 1)
 		{
 

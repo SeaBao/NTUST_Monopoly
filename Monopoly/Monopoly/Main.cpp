@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <iostream>
 #include "GameMap.h"
+#include"OperatingPlayers.h"
 #include "Utility.h"
 using namespace std;
 
@@ -29,7 +30,8 @@ int main() {
 	SetCursorPosistion(98, 1);
 
 	auto item = TheMap.GetEstateFromPos(0);
-
-	cin.get();
+	OperatingPlayers start;
+	start.GameStart();
+	
 	return 0;
 }

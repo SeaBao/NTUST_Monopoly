@@ -230,6 +230,11 @@ void GameMap::RefreshPlayerLocation() {
 	}
 }
 
+int GameMap::GetMaxPlayers()
+{
+	return MaxPlayers;
+}
+
 COORD GameMap::GetCoordByPos(short pos)
 {
 	if (pos <= 7) {
@@ -249,6 +254,14 @@ COORD GameMap::GetCoordByPos(short pos)
 	}
 }
 
+Estate& GameMap::GetEstateFromPos(int pos)
+{
+	for (int i = 0; i < LocationList.size(); i++) {
+		if (LocationList[i].get()->Position == pos) return *static_cast<Estate*>(LocationList[i].get());
+	}
+}
+
+
 Player& GameMap::GetOwnerByEstate(const Estate& e)
 {
 	for (Player p : PlayerList) {
@@ -258,6 +271,22 @@ Player& GameMap::GetOwnerByEstate(const Estate& e)
 			}
 		}
 	}
+}
+
+vector<reference_wrapper<Player>> GameMap::GetPlayersFromLocation(const Location& loc)
+{
+	return GetPlayersFromLocation(loc.Position);
+}
+
+vector<reference_wrapper<Player>> GameMap::GetPlayersFromLocation(int pos)
+{
+	vector<reference_wrapper<Player>> result;
+
+	for (int i = 0; i < PlayerList.size(); i++) {
+		if (PlayerList[i].Position == pos) result.push_back(PlayerList[i]);
+	}
+
+	return result;
 }
 
 Player& GameMap::GetCurrentPlayer()

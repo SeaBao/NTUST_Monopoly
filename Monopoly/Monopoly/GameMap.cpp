@@ -356,6 +356,7 @@ void GameMap::TurnNextRound()
 		for (auto p : PlayerList) {
 			if (p.Stop == -1) temp++;
 		}
+		_PlayerTurns = temp;
 	}
 }
 

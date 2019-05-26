@@ -219,7 +219,7 @@ void GameMap::RefreshPlayerLocation() {
 		vector<Player> tempList;
 
 		SetCursorPosistion(coord.X + 1, coord.Y + 1);
-		wcout << L" : :: :";
+		wcout << L" : :: : ";
 
 		for (Player player : PlayerList) {
 			if (player.Position == loc->Position) {

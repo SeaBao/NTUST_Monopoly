@@ -1,6 +1,15 @@
 #include "OperatingPlayers.h"
 #include<time.h>
 
+bool isEstateOwned(int pos) {
+	for (auto p : TheMap.PlayerList) {
+		for (auto estate : p.OwnedProperties) {
+			if (estate.Estate.Position == pos) return true;
+		}
+	}
+	return false;
+}
+
 
 OperatingPlayers::OperatingPlayers()
 {
@@ -56,12 +65,12 @@ void OperatingPlayers::GameStart()
 			TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position % 28;
 	
 			//命運
-			if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position == 6)
+			if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Destiny)
 			{
 
 			}
 			//機會
-			else if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position == 16)
+			else if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Chance)
 			{
 
 
@@ -71,7 +80,7 @@ void OperatingPlayers::GameStart()
 				
 				
 				//土地有沒有人購買
-				if (TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties.size() != 0)
+				if (isEstateOwned(TheMap.GetCurrentPlayer().Position))
 				{
 					//如果是自己的地 
 					if (TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).ID == TheMap.GetCurrentPlayer().ID)
@@ -124,6 +133,7 @@ void OperatingPlayers::GameStart()
 		
 	
 		wcout << L"      請按任意鍵繼續...";
+		TheMap.RefreshPlayerLocation();
 		TheMap.TurnNextRound();
 		command = _getch();
 	

@@ -94,6 +94,7 @@ void GameMap::ReadMap(string path)
 				}
 			}
 		}
+		_PlayerTurns = MaxPlayers;
 		file.close();
 	}
 }
@@ -305,6 +306,11 @@ vector<reference_wrapper<Player>> GameMap::GetPlayersFromLocation(int pos)
 	return result;
 }
 
+Location& GameMap::operator[](int index)
+{
+	return *LocationList[index].get();
+}
+
 void GameMap::TurnNextRound()
 {
 	if (RemainingRounds == 0) return;
@@ -342,7 +348,15 @@ void GameMap::TurnNextRound()
 		}
 	}
 
-	RemainingRounds -= 1;
+	_PlayerTurns--;
+	if (_PlayerTurns == 0) {
+		RemainingRounds--;
+
+		int temp = 0;
+		for (auto p : PlayerList) {
+			if (p.Stop == -1) temp++;
+		}
+	}
 }
 
 Player& GameMap::GetCurrentPlayer()

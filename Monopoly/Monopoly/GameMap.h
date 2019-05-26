@@ -27,19 +27,20 @@ public:
 	int GetLocationCount();
 	vector<reference_wrapper<Player>> GetPlayersFromLocation(const Location& loc);
 	vector<reference_wrapper<Player>> GetPlayersFromLocation(int pos);
-
+	Location& operator[](int index);
 	void TurnNextRound();
 
+	
 	vector<Player> PlayerList;
 	wstring Name;
 private:
 	int RemainingRounds;
 	int MaxPlayers;
 	int _CurrentPlayerID;
+	int _PlayerTurns;
 	
 	Estate& GetEstateByID(int ID);
 	vector<unique_ptr<Location>> LocationList;
-	
 };
 
 extern GameMap TheMap;

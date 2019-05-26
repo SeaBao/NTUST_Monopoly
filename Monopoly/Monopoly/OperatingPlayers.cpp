@@ -80,7 +80,7 @@ void OperatingPlayers::GameStart()
 				
 				
 				//土地有沒有人購買
-				if (TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties.size() != 0)
+				if (isEstateOwned(TheMap.GetCurrentPlayer().Position))
 				{
 					//如果是自己的地 
 					if (TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).ID == TheMap.GetCurrentPlayer().ID)

@@ -54,7 +54,7 @@ void OperatingPlayers::GameStart()
 		
 			TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position + DicePoint;
 			TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position % 28;
-			cout << TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position;
+	
 			//©R¹B
 			if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position == 6)
 			{
@@ -108,9 +108,10 @@ void OperatingPlayers::GameStart()
 				else
 				{
 					
+					
 					if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position))
 					{
-
+						
 					}
 					else
 					{

@@ -12,6 +12,7 @@ private:
 	
 public:
 	OperatingPlayers();
+	int  PurchaseLand(int ID, int pos);
 	void GameStart();
 	~OperatingPlayers();
 };

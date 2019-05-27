@@ -1,6 +1,7 @@
 #include "OperatingPlayers.h"
 #include<time.h>
 #include <Windows.h>
+char command;
 bool isEstateOwned(int pos) {
 	for (auto p : TheMap.PlayerList) {
 		for (auto estate : p.OwnedProperties) {
@@ -17,79 +18,12 @@ OperatingPlayers::OperatingPlayers()
 
 }
 
-int OperatingPlayers::PurchaseLand(int ID, int pos)
-{//75left 77right 13 enter 
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD Position;
-	Position.X = 15;
-	Position.Y = 20;
-	SetConsoleCursorPosition(hOut, Position);
-	wcout << ID+1 << L"目前在 "<< TheMap[pos].Name <<L" 位置";
-	Position.X = 15;
-	Position.Y = 22;
-	SetConsoleCursorPosition(hOut, Position);
-	wcout << L" 這片土地目前沒有人購買 是否要購買?";
-	Position.X = 15;
-	Position.Y = 26;	
-	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
-	SetConsoleCursorPosition(hOut, Position);
-	wcout << L"yes";
-	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x60);
-	wcout << L" no";
-
-	char commandTemp = 2;
-	int rightOrLeft = 0;
-	while (commandTemp != 13)
-	{
-		
-		if (rightOrLeft == 0)
-		{
-			if (commandTemp == 77)
-			{
-				Position.X = 15;
-				Position.Y = 26;
-				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
-				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"yes";
-				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
-				wcout << L" no";
-			}
-			rightOrLeft = 1;
-		}
-		else if (rightOrLeft == 1)
-		{
-			if (commandTemp == 75)
-			{
-				Position.X = 15;
-				Position.Y = 26;
-				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
-				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"yes";
-				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
-				wcout << L" no";
-			}
-			rightOrLeft = 0;
-		}
-		commandTemp = _getch();
-	}
-	if (rightOrLeft == 0)
-	{
-		return 1;
-	}
-	else if (rightOrLeft == 1)
-	{
-		return 0;
-	}
-	
-	
-}
 
 void OperatingPlayers::GameStart()
 {
 	int isFirst = 0;
 	
-	char command;
+	
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD Position;
@@ -103,7 +37,9 @@ void OperatingPlayers::GameStart()
 	while (command != EOF)
 	{
 		if (isFirst != 0)
-		{	
+		{
+			
+			
 			Position.X = 15;
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
@@ -175,13 +111,15 @@ void OperatingPlayers::GameStart()
 				{
 					
 					
-					if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position))
+					if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position))
 					{
-						
+						hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+						SetConsoleCursorPosition(hOut, Position);
 					}
 					else
 					{
-
+						hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+						SetConsoleCursorPosition(hOut, Position);
 					}
 				}
 			}
@@ -197,10 +135,7 @@ void OperatingPlayers::GameStart()
 		Position.Y = 12;
 		SetConsoleCursorPosition(hOut, Position);
 		wcout << L"                                               ";
-		Position.X = 15;
-		Position.Y = 20;
-		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"                                               ";
+	
 		isFirst = 1;
 	}
 }
@@ -208,4 +143,106 @@ void OperatingPlayers::GameStart()
 
 OperatingPlayers::~OperatingPlayers()
 {
+}
+
+int OperatingPlayers::PurchaseLand(int ID, int pos , COORD Position)
+{//75left 77right 13 enter 
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	
+	Position.X = 15;
+	Position.Y = 20;
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << ID + 1 << L"目前在 " << TheMap[pos].Name << L" 位置";
+	Position.X = 15;
+	Position.Y = 22;
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L" 這片土地目前沒有人購買 是否要購買?";
+	Position.X = 15;
+	Position.Y = 26;
+	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L"yes";
+	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x60);
+	wcout << L" no";
+
+
+	int rightOrLeft = 0;
+	while (command != 13)
+	{
+
+		if (rightOrLeft == 0)
+		{
+			if (command == 77)
+			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"yes";
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+				wcout << L" no";
+				rightOrLeft = 1;
+			}
+
+		}
+		else if (rightOrLeft == 1)
+		{
+			if (command == 75)
+			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"yes";
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
+				wcout << L" no";
+				rightOrLeft = 0;
+			}
+
+		}
+		command = _getch();
+	}
+	if (rightOrLeft == 0)
+	{
+		
+		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleCursorPosition(hOut, Position);
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 20;
+		SetConsoleCursorPosition(hOut, Position);
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 22;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		return 1;
+	}
+	else if (rightOrLeft == 1)
+	{
+	
+		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 20;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 22;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		return 0;
+	}
+
+
 }

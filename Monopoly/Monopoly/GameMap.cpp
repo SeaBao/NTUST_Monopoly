@@ -200,12 +200,8 @@ void GameMap::PrintMap()
 
 	sort(LocationList.begin(), LocationList.end(), [](const unique_ptr<Location> & a, const unique_ptr<Location> & b) { return a->Position < b->Position; });
 	
-	for (size_t i = 0; i < LocationList.size(); i++) {
-		auto coord = GetCoordByPos(LocationList[i].get()->Position);
-		SetCursorPosistion(coord.X + 5 - LocationList[i].get()->Name.length(), coord.Y);
-		wcout << LocationList[i].get()->Name;
-	}
-
+	
+	RefreshEstateLabel();
 	RefreshPlayerLocation();
 	ShowConsoleCursor(true);
 	SetCursorPosistion(cuurentPos.X, cuurentPos.Y);
@@ -230,6 +226,38 @@ void GameMap::RefreshPlayerLocation() {
 			}
 		}
 	}
+}
+
+void GameMap::RefreshEstateLabel()
+{
+	auto cuurentPos = GetCursorPosition();
+	ShowConsoleCursor(false);
+	const int whiteText = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+	const int clrSelection[4] = { BACKGROUND_BLUE, BACKGROUND_GREEN, BACKGROUND_RED, BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY };
+
+	for (size_t i = 0; i < LocationList.size(); i++) {
+		auto coord = GetCoordByPos(LocationList[i].get()->Position);
+
+		bool isPropertyOwned = false;
+		int playerID = -1;
+		for (auto p : PlayerList) {
+			for (auto item : p.OwnedProperties) {
+				if (item.Estate.Position == LocationList[i].get()->Position) {
+					isPropertyOwned = true;
+					playerID = p.ID;
+					break;
+				}
+			}
+		}
+
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (isPropertyOwned ? clrSelection[playerID] : 0) | whiteText);
+		SetCursorPosistion(coord.X + 5 - LocationList[i].get()->Name.length(), coord.Y);
+		wcout << LocationList[i].get()->Name;
+	}
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), whiteText);
+	ShowConsoleCursor(true);
+	SetCursorPosistion(cuurentPos.X, cuurentPos.Y);
 }
 
 int GameMap::GetMaxPlayers()

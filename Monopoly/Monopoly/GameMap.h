@@ -16,6 +16,7 @@ public:
 	void WriteMap(string path);
 	void PrintMap();
 	void RefreshPlayerLocation();
+	void RefreshEstateLabel();
 	int GetMaxPlayers();
 	int GetRemainingRounds();
 

@@ -3,6 +3,9 @@ class InfoPanel
 {
 public:
 	InfoPanel();
-	~InfoPanel();
+
+	void PrintPanel();
 };
+
+extern InfoPanel PlayerPanel;
 

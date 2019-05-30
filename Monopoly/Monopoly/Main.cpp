@@ -2,7 +2,9 @@
 #include <iostream>
 #include "GameMap.h"
 #include"OperatingPlayers.h"
+#include "InfoPanel.h"
 #include "Utility.h"
+
 using namespace std;
 
 int main() {
@@ -27,6 +29,7 @@ int main() {
 
 	TheMap.ReadMap("Basemap.txt");
 	TheMap.PrintMap();
+	PlayerPanel.PrintPanel();
 	SetCursorPosistion(98, 1);
 
 	OperatingPlayers start;

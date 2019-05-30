@@ -1,5 +1,6 @@
 #include "OperatingPlayers.h"
 #include<time.h>
+#include "InfoPanel.h"
 #include <Windows.h>
 char command;
 bool isEstateOwned(int pos) {
@@ -225,6 +226,7 @@ void OperatingPlayers::GameStart()
 		
 		
 		TheMap.TurnNextRound();
+		PlayerPanel.PrintPanel();
 		command = _getch();
 	
 		Position.X = 15;

@@ -299,7 +299,7 @@ Estate& GameMap::GetEstateFromPos(int pos)
 
 Player& GameMap::GetOwnerByEstate(const Estate& e)
 {
-	for (Player p : PlayerList) {
+	for (Player& p : PlayerList) {
 		for (auto item : p.OwnedProperties) {
 			if (e.Name == item.Estate.Name) {
 				return p;
@@ -382,7 +382,7 @@ void GameMap::TurnNextRound()
 
 		int temp = 0;
 		for (auto p : PlayerList) {
-			if (p.Stop == -1) temp++;
+			if (p.Stop != -1) temp++;
 		}
 		_PlayerTurns = temp;
 	}

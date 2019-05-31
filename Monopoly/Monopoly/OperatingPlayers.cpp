@@ -123,7 +123,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 20;
 					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"遠雄幫你蓋的房子被發現偷工減料，所有房地產減少一級(一級以上才執行)";
+					wcout << L"遠雄幫你蓋的房子被發現偷工減料，所有房地產減少一級";
 					for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
 					{
 						if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level > 1 )
@@ -149,12 +149,12 @@ void OperatingPlayers::GameStart()
 					//如果是自己的地 
 					if (tempposid == tempcurid)
 					{
-						cout << TheMap.GetCurrentPlayer().OwnedProperties.size();
+						
 					
 						int pos = 0;
 						for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
 						{
-							if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position) == TheMap.GetCurrentPlayer().OwnedProperties[i].Estate)
+							if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position)== TheMap.GetCurrentPlayer().OwnedProperties[i].Estate)
 							{
 								pos = i;
 							}
@@ -177,11 +177,32 @@ void OperatingPlayers::GameStart()
 							
 						}
 					}
-					else if((TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).ID) != (TheMap.GetCurrentPlayer().ID))
-					{
-						
+					else if((tempposid) != (TheMap.GetCurrentPlayer().ID))
+					{		
 						//徵收土地錢	
-
+						int pos = -1;
+				
+						int mm = TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position;
+						int nn = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[0].Estate.Position;
+						for (int i = 0; i < TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties.size(); i++)
+						{
+						
+							if (TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position == TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[i].Estate.Position)
+							{
+							
+								pos = i;
+							}
+						}
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << TheMap.GetCurrentPlayer().ID + 1 << L" 號玩家目前在 " << tempposid + 1 << L"的格子裡";
+						Position.X = 15;
+						Position.Y = 22;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L" 需要繳納 " << static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level]<<L" 元";
+						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+						TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
 					}
 				}
 				else

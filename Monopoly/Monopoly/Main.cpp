@@ -30,6 +30,8 @@ int main() {
 	TheMap.ReadMap("Basemap.txt");
 	TheMap.PrintMap();
 	PlayerPanel.PrintPanel();
+
+
 	SetCursorPosistion(98, 1);
 
 	OperatingPlayers start;

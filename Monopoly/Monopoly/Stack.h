@@ -17,7 +17,7 @@ public:
 	void writeStackFile();
 
 	void rateChange(string path);
-	void colorChange();
+	void colorChange(int rate);
 
 private:
 	int playerMoney;

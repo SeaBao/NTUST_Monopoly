@@ -71,6 +71,8 @@ void Stack::readStackFile(string path)
 	wifstream file;
 	file.open(path);
 
+	Stack Stemp;
+
 	if (file.is_open())
 	{
 		int row = 0;
@@ -80,6 +82,13 @@ void Stack::readStackFile(string path)
 			row++;
 			vector<wstring> store;
 			Split(line, store, ' ');
+
+			wstring rate = store[1];
+			int temp = stoi(rate);
+
+
+			Stemp.colorChange(temp);
+
 			pos.X = 108;
 			pos.Y = 10 + 2 * row + 1;
 			SetConsoleCursorPosition(hOut, pos);
@@ -87,6 +96,10 @@ void Stack::readStackFile(string path)
 			pos.X = 116;
 			SetConsoleCursorPosition(hOut, pos);
 			wcout << store[1] << endl;
+
+			hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+			SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+
 			pos.X = 122;
 			SetConsoleCursorPosition(hOut, pos);
 			wcout << store[2] << endl;
@@ -135,6 +148,7 @@ void Stack::rateChange(string path)
 		int row = 0;
 		wstring line;
 		vector<wstring> store;
+		vector<wstring> upsAndDowns;
 		int count = 0;
 		while (!file.eof())
 		{
@@ -155,10 +169,36 @@ void Stack::rateChange(string path)
 			int temp = stoi(stackInfo[i][0]);
 			temp += rate;
 			stackInfo[i][0] = to_wstring(temp);
+			wstring tempw = to_wstring(rate);
+			if (rate >= 0)
+			{
+				tempw.insert(0, L"+");
+			}
+			upsAndDowns.push_back(tempw);
+		}
+		for (int i = 0; i < upsAndDowns.size(); i++)
+		{
+			stackInfo[i][1] = upsAndDowns[i];
 		}
 		Stack temp;
 		temp.writeStackFile();
+		temp.printTheScreen();
 		temp.readStackFile("Stacks.txt");
+
 	}
 	file.close();
+}
+
+void Stack::colorChange(int rate)
+{
+	if (rate >= 0)
+	{
+		hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hOut, FOREGROUND_RED);
+	}
+	else
+	{
+		hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hOut, FOREGROUND_GREEN);
+	}
 }

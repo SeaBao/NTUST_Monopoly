@@ -1,6 +1,7 @@
 #include "OperatingPlayers.h"
 #include<time.h>
 #include "InfoPanel.h"
+#include "Stack.h"
 #include <Windows.h>
 char command;
 bool isEstateOwned(int pos) {
@@ -33,6 +34,8 @@ void OperatingPlayers::GameStart()
 	SetConsoleCursorPosition(hOut, Position);
 
 	wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+	theStack.rateChange("Stacks.txt");
+	theStack.readStackFile("Stacks.txt");
 	command = _getch();
 	
 	while (command != EOF)
@@ -45,6 +48,8 @@ void OperatingPlayers::GameStart()
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
 			wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+			theStack.rateChange("Stacks.txt");
+			theStack.readStackFile("Stacks.txt");
 			command = _getch();
 			
 		}

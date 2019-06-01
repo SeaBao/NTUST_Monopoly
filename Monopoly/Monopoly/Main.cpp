@@ -4,6 +4,7 @@
 #include"OperatingPlayers.h"
 #include "InfoPanel.h"
 #include "Utility.h"
+#include "Stack.h"
 
 using namespace std;
 
@@ -30,6 +31,9 @@ int main() {
 	TheMap.ReadMap("Basemap.txt");
 	TheMap.PrintMap();
 	PlayerPanel.PrintPanel();
+	theStack.printTheScreen();
+	theStack.readStackFile("Stacks.txt");
+	
 
 
 	SetCursorPosistion(98, 1);

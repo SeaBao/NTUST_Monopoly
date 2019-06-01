@@ -19,7 +19,7 @@ public:
 	void RefreshEstateLabel();
 	int GetMaxPlayers();
 	int GetRemainingRounds();
-
+	int ReturnTurns();
 	COORD GetCoordByPos(short pos);
 	Estate& GetEstateFromPos(int pos);
 	Player& GetOwnerByEstate(const Estate& e);

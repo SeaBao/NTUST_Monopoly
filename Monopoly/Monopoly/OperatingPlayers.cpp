@@ -18,29 +18,77 @@ OperatingPlayers::OperatingPlayers()
 
 
 }
-
+void GameEnd()
+{
+	int maxPlayer = 0;
+	int maxMoney = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		if (maxMoney < TheMap.PlayerList[i].Money)
+		{
+			maxPlayer = i;
+			maxMoney = TheMap.PlayerList[i].Money;
+		}
+	}
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD Position;
+	Position.X = 99;
+	Position.Y = 16;
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L"秤 ";
+	for (int i = 0; i < 4; i++)
+	{
+		if (maxMoney == TheMap.PlayerList[i].Money)
+		{
+			wcout << i+1 << " ";
+		}
+	}
+	Position.Y = 18;
+	SetConsoleCursorPosition(hOut, Position);
+	system("pause");
+	
+}
 
 void OperatingPlayers::GameStart()
 {
 	int isFirst = 0;
-
+	
 
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD Position;
+	Position.X = 99;
+	Position.Y = 9;
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L"ヘ玡计 " << 21 - TheMap.GetRemainingRounds();
+	
 	Position.X = 15;
 	Position.Y = 10;
 	SetConsoleCursorPosition(hOut, Position);
 
 	wcout << L"瞷近 " << TheMap.GetCurrentPlayer().ID + 1 << L"產耏浑叫ヴ種龄耏浑";
 	command = _getch();
-
+	PlayerPanel.PrintPanel();
+	
 	while (command != EOF)
 	{
+		Position.X = 99;
+		Position.Y = 9;
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"ヘ玡计 " << 21 - TheMap.GetRemainingRounds();
+		if (TheMap.GetRemainingRounds() == 0)
+		{
+			GameEnd();
+		}
+		
 		if (isFirst != 0)
 		{
 
-
+			Position.X = 99;
+			Position.Y = 9;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"ヘ玡计 " << 21 - TheMap.GetRemainingRounds();
 			Position.X = 15;
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
@@ -65,6 +113,7 @@ void OperatingPlayers::GameStart()
 
 
 		TheMap.RefreshPlayerLocation();
+	
 		//㏑笲
 		if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Destiny)
 		{
@@ -266,6 +315,10 @@ void OperatingPlayers::GameStart()
 
 		TheMap.TurnNextRound();
 		PlayerPanel.PrintPanel();
+		Position.X = 99;
+		Position.Y = 9;
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"ヘ玡计 " << 21-TheMap.GetRemainingRounds();
 		command = _getch();
 
 		Position.X = 15;

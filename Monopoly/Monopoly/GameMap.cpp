@@ -270,6 +270,11 @@ int GameMap::GetRemainingRounds()
 	return RemainingRounds;
 }
 
+int GameMap::ReturnTurns()
+{
+	return _PlayerTurns;
+}
+
 COORD GameMap::GetCoordByPos(short pos)
 {
 	if (pos <= 7) {

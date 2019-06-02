@@ -19,6 +19,106 @@ OperatingPlayers::OperatingPlayers()
 
 
 }
+int OperatingPlayers::CheatedDice()
+{
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD Position;
+	Position.X = 15;
+	Position.Y = 20;
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L"是否使用'遙控骰子'?";
+	Position.X = 15;
+	Position.Y = 22;
+	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L"yes";
+	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x60);
+	wcout << L" no";
+	int rightOrLeft = 0;
+	while (command != 13)
+	{
+
+		if (rightOrLeft == 0)
+		{
+			if (command == 77)
+			{
+				Position.X = 15;
+				Position.Y = 22;
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"yes";
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+				wcout << L" no";
+				rightOrLeft = 1;
+			}
+
+		}
+		else if (rightOrLeft == 1)
+		{
+			if (command == 75)
+			{
+				Position.X = 15;
+				Position.Y = 22;
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"yes";
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
+				wcout << L" no";
+				rightOrLeft = 0;
+			}
+
+		}
+		command = _getch();
+	}
+	if (rightOrLeft == 0)
+	{
+
+		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleCursorPosition(hOut, Position);
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 20;
+		SetConsoleCursorPosition(hOut, Position);
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 22;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		return 1;
+	}
+	else if (rightOrLeft == 1)
+	{
+
+		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 20;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 22;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		return 0;
+	}
+	return 0;
+}
+
+int OperatingPlayers::RoadBarrier()
+{
+	return 0;
+}
+
 void GameEnd()
 {
 	int maxPlayer = 0;
@@ -72,10 +172,13 @@ void OperatingPlayers::GameStart()
 	theStack.rateChange("Stacks.txt");
 	theStack.readStackFile("Stacks.txt");
 	command = _getch();
+
 	PlayerPanel.PrintPanel();
 	
 	while (command != EOF)
 	{
+		int CheatedDicePoint = 0;
+		
 		Position.X = 99;
 		Position.Y = 9;
 		SetConsoleCursorPosition(hOut, Position);
@@ -96,18 +199,66 @@ void OperatingPlayers::GameStart()
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
 			wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+		
+
 			theStack.rateChange("Stacks.txt");
 			theStack.readStackFile("Stacks.txt");
 			command = _getch();
+			if (command == 'B' || command == 'b')
+			{
 
+				if (CheatedDice())
+				{
+					Position.X = 15;
+					Position.Y = 26;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"請輸入指定步數(1~6) : ";
+					cin >> CheatedDicePoint;
+					while (CheatedDicePoint > 6 || CheatedDicePoint < 0)
+					{
+						wcout << L"請重新輸入";
+						cin >> CheatedDicePoint;
+					}
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					command = 3;
+				}
+				else
+				{
+					Position.X = 15;
+					Position.Y = 26;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"案任意鍵繼續擲骰子";
+					command = _getch();
+					Position.X = 15;
+					Position.Y = 26;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"                                                        ";
+				}
+				
+			}
+			else if (command == 'N' || command == 'n')
+			{
+				command = _getch();
+			}
 		}
+	
 		int oneRound = 0;
 		srand(static_cast<int>(time(NULL)));
 		Position.X = 15;
 		Position.Y = 12;
 		SetConsoleCursorPosition(hOut, Position);
+
 		int DicePoint = (rand() % 6) + 1;
-		wcout << L"擲出的點數為 " << DicePoint << L" 點";
+		if (CheatedDicePoint != 0)
+		{
+			DicePoint = CheatedDicePoint;
+		}
+	
+			wcout << L"擲出的點數為 " << DicePoint << L" 點";
+		
+	
 
 		TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position + DicePoint;
 		if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position >= 28)
@@ -331,6 +482,10 @@ void OperatingPlayers::GameStart()
 		SetConsoleCursorPosition(hOut, Position);
 		wcout << L"                                                        ";
 		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                                        ";
+		Position.X = 15;
 		Position.Y = 20;
 		SetConsoleCursorPosition(hOut, Position);
 		wcout << L"                                                         ";
@@ -338,7 +493,9 @@ void OperatingPlayers::GameStart()
 		Position.Y = 22;
 		SetConsoleCursorPosition(hOut, Position);
 		wcout << L"                                                         ";
+	
 		isFirst = 1;
+		
 	}
 } 
 
@@ -346,6 +503,7 @@ void OperatingPlayers::GameStart()
 OperatingPlayers::~OperatingPlayers()
 {
 }
+
 
 int OperatingPlayers::PurchaseLand(int ID, int pos , COORD Position)
 {//75left 77right 13 enter 
@@ -367,8 +525,6 @@ int OperatingPlayers::PurchaseLand(int ID, int pos , COORD Position)
 	wcout << L"yes";
 	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x60);
 	wcout << L" no";
-
-
 	int rightOrLeft = 0;
 	while (command != 13)
 	{

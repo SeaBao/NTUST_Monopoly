@@ -385,12 +385,13 @@ void GameMap::TurnNextRound()
 	}
 
 	_PlayerTurns--;
+
 	if (_PlayerTurns == 0) {
 		RemainingRounds--;
 
 		int temp = 0;
 		for (auto p : PlayerList) {
-			if (p.Stop != -1) temp++;
+			if (p.Stop == 0) temp++;
 		}
 		_PlayerTurns = temp;
 	}

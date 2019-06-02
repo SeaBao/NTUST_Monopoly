@@ -2,6 +2,8 @@
 #include<time.h>
 #include "InfoPanel.h"
 #include "Stack.h"
+#include "Menu.h"
+#include "Bank.h"
 #include <Windows.h>
 char command;
 bool isEstateOwned(int pos) {
@@ -253,26 +255,38 @@ void OperatingPlayers::GameStart()
 	Position.Y = 9;
 	SetConsoleCursorPosition(hOut, Position);
 	wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
-	
 	Position.X = 15;
 	Position.Y = 10;
 	SetConsoleCursorPosition(hOut, Position);
-
+	theBank.payDebt();
 	wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
 	theStack.rateChange("Stacks.txt");
 	theStack.readStackFile("Stacks.txt");
+	theBank.printMoney();
 	command = _getch();
+	if (command == 27)//esc
+	{
+		theMenu.printMenu();
+		command = _getch();
+	}
 
 	PlayerPanel.PrintPanel();
+	theBank.printMoney();
 	
 	while (command != EOF)
 	{
+		if (command == 27)//esc
+		{
+			theMenu.printMenu();
+			command = _getch();
+		}
 		int CheatedDicePoint = 0;
 		
 		Position.X = 99;
 		Position.Y = 9;
 		SetConsoleCursorPosition(hOut, Position);
 		wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
+		theBank.printMoney();
 		if (TheMap.GetRemainingRounds() == 0)
 		{
 			GameEnd();
@@ -285,15 +299,22 @@ void OperatingPlayers::GameStart()
 			Position.Y = 9;
 			SetConsoleCursorPosition(hOut, Position);
 			wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
+			theBank.printMoney();
 			Position.X = 15;
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
+			theBank.payDebt();
 			wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
 		
 
 			theStack.rateChange("Stacks.txt");
 			theStack.readStackFile("Stacks.txt");
 			command = _getch();
+			if (command == 27)//esc
+			{
+				theMenu.printMenu();
+				command = _getch();
+			}
 			if (command == 'B' || command == 'b')
 			{
 
@@ -576,11 +597,13 @@ void OperatingPlayers::GameStart()
 
 
 		TheMap.TurnNextRound();
+		theBank.printMoney();
 		PlayerPanel.PrintPanel();
 		Position.X = 99;
 		Position.Y = 9;
 		SetConsoleCursorPosition(hOut, Position);
 		wcout << L"目前回合數為 " << 21-TheMap.GetRemainingRounds();
+		theBank.printMoney();
 		command = _getch();
 
 		Position.X = 15;
@@ -707,7 +730,6 @@ int OperatingPlayers::PurchaseLand(int ID, int pos , COORD Position)
 		wcout << L"                                               ";
 		return 0;
 	}
-
 
 }
 

@@ -18,7 +18,7 @@ public:
 	LocType Type;
 	wstring Name;
 	int Position;
-
+	
 	bool operator<(const Location& loc) const;
 	bool operator==(const Location& loc) const;
 };

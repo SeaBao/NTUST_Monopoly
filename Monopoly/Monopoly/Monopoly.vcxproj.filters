@@ -54,6 +54,12 @@
     <ClCompile Include="Stack.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="Bank.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Basemap.txt">
@@ -89,6 +95,12 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="Stack.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Bank.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

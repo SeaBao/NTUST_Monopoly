@@ -2,6 +2,8 @@
 #include<time.h>
 #include "InfoPanel.h"
 #include "Stack.h"
+#include "Menu.h"
+#include "Bank.h"
 #include <Windows.h>
 char command;
 bool isEstateOwned(int pos) {
@@ -33,10 +35,17 @@ void OperatingPlayers::GameStart()
 	Position.Y = 10;
 	SetConsoleCursorPosition(hOut, Position);
 
+	theBank.payDebt();
 	wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
 	theStack.rateChange("Stacks.txt");
 	theStack.readStackFile("Stacks.txt");
+
 	command = _getch();
+	if (command == 27)//esc
+	{
+		theMenu.printMenu();
+		command = _getch();
+	}
 
 	while (command != EOF)
 	{
@@ -47,10 +56,18 @@ void OperatingPlayers::GameStart()
 			Position.X = 15;
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
+			theBank.payDebt();
 			wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
 			theStack.rateChange("Stacks.txt");
 			theStack.readStackFile("Stacks.txt");
+
 			command = _getch();
+
+			if (command == 27)//esc
+			{
+				theMenu.printMenu();
+				command = _getch();
+			}
 
 		}
 		int oneRound = 0;
@@ -271,6 +288,7 @@ void OperatingPlayers::GameStart()
 
 		TheMap.TurnNextRound();
 		PlayerPanel.PrintPanel();
+		theBank.printMoney();
 		command = _getch();
 
 		Position.X = 15;
@@ -333,6 +351,10 @@ int OperatingPlayers::PurchaseLand(int ID, int pos , COORD Position)
 				wcout << L" no";
 				rightOrLeft = 1;
 			}
+			else if (command == 27)//esc
+			{
+				theMenu.printMenu();
+			}
 
 		}
 		else if (rightOrLeft == 1)
@@ -347,6 +369,10 @@ int OperatingPlayers::PurchaseLand(int ID, int pos , COORD Position)
 				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
 				wcout << L" no";
 				rightOrLeft = 0;
+			}
+			else if (command == 27)//esc
+			{
+				theMenu.printMenu();
 			}
 
 		}

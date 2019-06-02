@@ -80,6 +80,8 @@ void GameMap::ReadMap(string path)
 					player.Money = stoi(splitStrArr[2]);
 					player.Stop = RemainingRounds;
 
+
+
 					if (splitStrArr.size() > 3) {
 						for (size_t i = 3; i < splitStrArr.size(); i += 2) {
 							Property property;

@@ -351,9 +351,6 @@ void GameMap::TurnNextRound()
 	if (GetCurrentPlayer().Money < 0) {
 		GetCurrentPlayer().Stop = -1;
 	}
-	else {
-		GetCurrentPlayer().Stop = RemainingRounds;
-	}
 
 	int index = -1;
 	for (int i = 0; i < PlayerList.size(); i++) {
@@ -364,19 +361,29 @@ void GameMap::TurnNextRound()
 
 	bool isFound = false;
 	for (int i = index + 1; i < PlayerList.size(); i++) {
-		if (PlayerList[i].Stop != -1) {
+		if (PlayerList[i].Stop == 0) {
 			_CurrentPlayerID = PlayerList[i].ID;
 			isFound = true;
 			break;
+		}
+		else {
+			if (PlayerList[i].Stop != -1) {
+				PlayerList[i].Stop -= 1;
+			}
 		}
 	}
 
 	if (!isFound) {
 		for (int i = 0; i < index; i++) {
-			if (PlayerList[i].Stop != -1) {
+			if (PlayerList[i].Stop == 0) {
 				_CurrentPlayerID = PlayerList[i].ID;
 				isFound = true;
 				break;
+			}
+			else {
+				if (PlayerList[i].Stop != -1) {
+					PlayerList[i].Stop -= 1;
+				}
 			}
 		}
 	}

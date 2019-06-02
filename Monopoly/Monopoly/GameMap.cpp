@@ -78,7 +78,7 @@ void GameMap::ReadMap(string path)
 					player.ID = stoi(splitStrArr[0]);
 					player.Position = stoi(splitStrArr[1]);
 					player.Money = stoi(splitStrArr[2]);
-					player.Stop = RemainingRounds;
+					player.Stop = 0;
 
 
 
@@ -272,6 +272,11 @@ int GameMap::GetRemainingRounds()
 	return RemainingRounds;
 }
 
+int GameMap::ReturnTurns()
+{
+	return _PlayerTurns;
+}
+
 COORD GameMap::GetCoordByPos(short pos)
 {
 	if (pos <= 7) {
@@ -348,9 +353,6 @@ void GameMap::TurnNextRound()
 	if (GetCurrentPlayer().Money < 0) {
 		GetCurrentPlayer().Stop = -1;
 	}
-	else {
-		GetCurrentPlayer().Stop = RemainingRounds;
-	}
 
 	int index = -1;
 	for (int i = 0; i < PlayerList.size(); i++) {
@@ -361,7 +363,7 @@ void GameMap::TurnNextRound()
 
 	bool isFound = false;
 	for (int i = index + 1; i < PlayerList.size(); i++) {
-		if (PlayerList[i].Stop != -1) {
+		if (PlayerList[i].Stop == 0) {
 			_CurrentPlayerID = PlayerList[i].ID;
 			isFound = true;
 			break;
@@ -370,7 +372,7 @@ void GameMap::TurnNextRound()
 
 	if (!isFound) {
 		for (int i = 0; i < index; i++) {
-			if (PlayerList[i].Stop != -1) {
+			if (PlayerList[i].Stop == 0) {
 				_CurrentPlayerID = PlayerList[i].ID;
 				isFound = true;
 				break;
@@ -378,13 +380,20 @@ void GameMap::TurnNextRound()
 		}
 	}
 
+	for (int i = 0; i < PlayerList.size(); i++) {
+		if (PlayerList[i].Stop > 0) {
+			PlayerList[i].Stop -= 1;
+		}
+	}
+
 	_PlayerTurns--;
+
 	if (_PlayerTurns == 0) {
 		RemainingRounds--;
 
 		int temp = 0;
 		for (auto p : PlayerList) {
-			if (p.Stop != -1) temp++;
+			if (p.Stop == 0) temp++;
 		}
 		_PlayerTurns = temp;
 	}

@@ -12,6 +12,8 @@ private:
 	
 public:
 	OperatingPlayers();
+	int CheatedDice();
+	int RoadBarrier();
 	int  PurchaseLand(int ID, int pos, COORD Position);
 	int UpdateLand (int ID, int pos, COORD Position, int index);
 	void GameStart();

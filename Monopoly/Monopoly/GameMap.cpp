@@ -78,7 +78,7 @@ void GameMap::ReadMap(string path)
 					player.ID = stoi(splitStrArr[0]);
 					player.Position = stoi(splitStrArr[1]);
 					player.Money = stoi(splitStrArr[2]);
-					player.Stop = RemainingRounds;
+					player.Stop = 0;
 
 					if (splitStrArr.size() > 3) {
 						for (size_t i = 3; i < splitStrArr.size(); i += 2) {
@@ -366,11 +366,6 @@ void GameMap::TurnNextRound()
 			isFound = true;
 			break;
 		}
-		else {
-			if (PlayerList[i].Stop != -1) {
-				PlayerList[i].Stop -= 1;
-			}
-		}
 	}
 
 	if (!isFound) {
@@ -380,11 +375,12 @@ void GameMap::TurnNextRound()
 				isFound = true;
 				break;
 			}
-			else {
-				if (PlayerList[i].Stop != -1) {
-					PlayerList[i].Stop -= 1;
-				}
-			}
+		}
+	}
+
+	for (int i = 0; i < PlayerList.size(); i++) {
+		if (PlayerList[i].Stop > 0) {
+			PlayerList[i].Stop -= 1;
 		}
 	}
 

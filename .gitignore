@@ -8,6 +8,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+Monopoly/Stacks.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

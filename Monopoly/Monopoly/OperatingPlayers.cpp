@@ -116,6 +116,96 @@ int OperatingPlayers::CheatedDice()
 
 int OperatingPlayers::RoadBarrier()
 {
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD Position;
+	Position.X = 15;
+	Position.Y = 20;
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L"是否使用'路障'?";
+	Position.X = 15;
+	Position.Y = 22;
+	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+	SetConsoleCursorPosition(hOut, Position);
+	wcout << L"yes";
+	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x60);
+	wcout << L" no";
+	int rightOrLeft = 0;
+	while (command != 13)
+	{
+
+		if (rightOrLeft == 0)
+		{
+			if (command == 77)
+			{
+				Position.X = 15;
+				Position.Y = 22;
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"yes";
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+				wcout << L" no";
+				rightOrLeft = 1;
+			}
+
+		}
+		else if (rightOrLeft == 1)
+		{
+			if (command == 75)
+			{
+				Position.X = 15;
+				Position.Y = 22;
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x5d);
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"yes";
+				SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | 0x90);
+				wcout << L" no";
+				rightOrLeft = 0;
+			}
+
+		}
+		command = _getch();
+	}
+	if (rightOrLeft == 0)
+	{
+
+		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleCursorPosition(hOut, Position);
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 20;
+		SetConsoleCursorPosition(hOut, Position);
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 22;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		return 1;
+	}
+	else if (rightOrLeft == 1)
+	{
+
+		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 20;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		Position.X = 15;
+		Position.Y = 22;
+		SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x00);
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                               ";
+		return 0;
+	}
 	return 0;
 }
 
@@ -231,19 +321,31 @@ void OperatingPlayers::GameStart()
 					SetConsoleCursorPosition(hOut, Position);
 					wcout << L"案任意鍵繼續擲骰子";
 					command = _getch();
-					Position.X = 15;
-					Position.Y = 26;
-					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"                                                        ";
+					
 				}
 				
 			}
 			else if (command == 'N' || command == 'n')
 			{
-				command = _getch();
+				if (RoadBarrier() == 1)
+				{
+					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
+				}
+				else
+				{
+					Position.X = 15;
+					Position.Y = 26;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"案任意鍵繼續擲骰子";
+					command = _getch();
+				}
+				
 			}
 		}
-	
+		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                                        ";
 		int oneRound = 0;
 		srand(static_cast<int>(time(NULL)));
 		Position.X = 15;
@@ -267,7 +369,11 @@ void OperatingPlayers::GameStart()
 			oneRound = 1;
 		}
 
-
+		if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
+		{
+			TheMap.GetCurrentPlayer().Stop = 1;
+			TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
+		}
 		TheMap.RefreshPlayerLocation();
 	
 		//命運

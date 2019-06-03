@@ -362,27 +362,29 @@ void GameMap::TurnNextRound()
 	if (index == -1) throw exception("Wrong Player ID");
 
 	bool isFound = false;
-	for (int i = index + 1; i < PlayerList.size(); i++) {
-		if (PlayerList[i].Stop == 0) {
-			_CurrentPlayerID = PlayerList[i].ID;
-			isFound = true;
-			break;
-		}
-	}
-
-	if (!isFound) {
-		for (int i = 0; i < index; i++) {
+	while (!isFound) {
+		for (int i = index + 1; i < PlayerList.size(); i++) {
 			if (PlayerList[i].Stop == 0) {
 				_CurrentPlayerID = PlayerList[i].ID;
 				isFound = true;
 				break;
 			}
 		}
-	}
 
-	for (int i = 0; i < PlayerList.size(); i++) {
-		if (PlayerList[i].Stop > 0) {
-			PlayerList[i].Stop -= 1;
+		if (!isFound) {
+			for (int i = 0; i < index; i++) {
+				if (PlayerList[i].Stop == 0) {
+					_CurrentPlayerID = PlayerList[i].ID;
+					isFound = true;
+					break;
+				}
+			}
+		}
+
+		for (int i = 0; i < PlayerList.size(); i++) {
+			if (PlayerList[i].Stop > 0) {
+				PlayerList[i].Stop -= 1;
+			}
 		}
 	}
 

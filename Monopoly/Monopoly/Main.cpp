@@ -5,6 +5,7 @@
 #include "InfoPanel.h"
 #include "Utility.h"
 #include "Stack.h"
+#include "Bank.h"
 
 using namespace std;
 
@@ -31,6 +32,13 @@ int main() {
 	TheMap.ReadMap("Basemap.txt");
 	TheMap.PrintMap();
 	PlayerPanel.PrintPanel();
+	for (int i = 0; i < 4; i++)
+	{
+		theBank.AccMoney[i] = 10000;
+		theBank.AccDebt[i] = 0;
+		theBank.AccPay[i] = 0;
+	}
+	theBank.printMoney();
 	theStack.printTheScreen();
 	theStack.readStackFile("Stacks.txt");
 	

@@ -80,6 +80,8 @@ void GameMap::ReadMap(string path)
 					player.Money = stoi(splitStrArr[2]);
 					player.Stop = 0;
 
+
+
 					if (splitStrArr.size() > 3) {
 						for (size_t i = 3; i < splitStrArr.size(); i += 2) {
 							Property property;
@@ -360,45 +362,43 @@ void GameMap::TurnNextRound()
 	if (index == -1) throw exception("Wrong Player ID");
 
 	bool isFound = false;
-	for (int i = index + 1; i < PlayerList.size(); i++) {
-		if (PlayerList[i].Stop == 0) {
-			_CurrentPlayerID = PlayerList[i].ID;
-			isFound = true;
-			break;
-		}
-	}
-
-	if (!isFound) {
-		for (int i = 0; i < index; i++) {
+	while (!isFound) {
+		for (int i = index + 1; i < PlayerList.size(); i++) {
 			if (PlayerList[i].Stop == 0) {
 				_CurrentPlayerID = PlayerList[i].ID;
 				isFound = true;
 				break;
 			}
 		}
-	}
 
-	for (int i = 0; i < PlayerList.size(); i++) {
-		if (PlayerList[i].Stop > 0) {
-			PlayerList[i].Stop -= 1;
-		}
-	}
-
-	_PlayerTurns--;
-
-	if (_PlayerTurns == 0) {
-		RemainingRounds--;
-
-		int temp = 0;
-		for (auto p : PlayerList) {
-			if (p.Stop == 0) temp++;
-			else
-			{
-				cout << "?";
+		if (!isFound) {
+			for (int i = 0; i < index; i++) {
+				if (PlayerList[i].Stop == 0) {
+					_CurrentPlayerID = PlayerList[i].ID;
+					isFound = true;
+					break;
+				}
 			}
 		}
-		_PlayerTurns = temp;
+		_PlayerTurns--;
+
+		if (_PlayerTurns == 0) {
+			RemainingRounds--;
+
+			for (int i = 0; i < PlayerList.size(); i++) {
+				if (PlayerList[i].Stop > 0) {
+					PlayerList[i].Stop -= 1;
+				}
+			}
+
+			int temp = 0;
+			for (auto p : PlayerList) {
+				if (p.Stop == 0) temp++;
+			}
+			_PlayerTurns = temp;
+		}
 	}
+	
 }
 
 Player& GameMap::GetCurrentPlayer()

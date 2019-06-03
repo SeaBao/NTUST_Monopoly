@@ -3,7 +3,6 @@
 #include <vector>
 using namespace std;
 
-
 struct Property
 {
 	Estate Estate;
@@ -21,6 +20,6 @@ public:
 	int Money;
 	int Position;
 	int Stop;
-	
+
 	vector<Property> OwnedProperties;
 };

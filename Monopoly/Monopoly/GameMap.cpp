@@ -380,25 +380,25 @@ void GameMap::TurnNextRound()
 				}
 			}
 		}
+		_PlayerTurns--;
 
-		for (int i = 0; i < PlayerList.size(); i++) {
-			if (PlayerList[i].Stop > 0) {
-				PlayerList[i].Stop -= 1;
+		if (_PlayerTurns == 0) {
+			RemainingRounds--;
+
+			for (int i = 0; i < PlayerList.size(); i++) {
+				if (PlayerList[i].Stop > 0) {
+					PlayerList[i].Stop -= 1;
+				}
 			}
+
+			int temp = 0;
+			for (auto p : PlayerList) {
+				if (p.Stop == 0) temp++;
+			}
+			_PlayerTurns = temp;
 		}
 	}
-
-	_PlayerTurns--;
-
-	if (_PlayerTurns == 0) {
-		RemainingRounds--;
-
-		int temp = 0;
-		for (auto p : PlayerList) {
-			if (p.Stop == 0) temp++;
-		}
-		_PlayerTurns = temp;
-	}
+	
 }
 
 Player& GameMap::GetCurrentPlayer()

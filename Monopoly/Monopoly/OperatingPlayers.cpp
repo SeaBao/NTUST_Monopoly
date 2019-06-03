@@ -389,6 +389,7 @@ void OperatingPlayers::GameStart()
 				SetConsoleCursorPosition(hOut, Position);
 				wcout << L"遇到韓國魚游行，停止行動2回合";
 				TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 2;
+			
 				break;
 			case 2:
 				Position.X = 15;

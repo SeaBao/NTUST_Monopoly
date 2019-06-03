@@ -392,6 +392,10 @@ void GameMap::TurnNextRound()
 		int temp = 0;
 		for (auto p : PlayerList) {
 			if (p.Stop == 0) temp++;
+			else
+			{
+				cout << "?";
+			}
 		}
 		_PlayerTurns = temp;
 	}

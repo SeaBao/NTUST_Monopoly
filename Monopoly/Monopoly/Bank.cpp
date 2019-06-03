@@ -176,7 +176,8 @@ void Bank::printATM()
 			}
 			else if (pos.Y == 32)//Â÷¶}
 			{
-
+				printWord(0);
+				break;
 			}
 		}
 		command = _getch();

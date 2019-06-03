@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include "Utility.h"
 #include "Bank.h"
+#include "Stack.h"
 
 Menu theMenu;
 
@@ -61,7 +62,8 @@ void Menu::printMenu()
 			}
 			else if (pos.Y == 32)//股票市場
 			{
-
+				theStack.buyStacks();
+				break;
 			}
 			else if (pos.Y == 33)//離開遊戲
 			{

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <conio.h>
 #include <vector>
 using namespace std;
 
@@ -18,6 +19,8 @@ public:
 
 	void rateChange(string path);
 	void colorChange(int rate);
+
+	void buyStacks();
 
 private:
 	int playerMoney;

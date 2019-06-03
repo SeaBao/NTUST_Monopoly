@@ -255,6 +255,19 @@ void GameMap::RefreshEstateLabel()
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (isPropertyOwned ? clrSelection[playerID] : 0) | whiteText);
 		SetCursorPosistion(coord.X + 5 - LocationList[i].get()->Name.length(), coord.Y);
 		wcout << LocationList[i].get()->Name;
+
+		if (TheMap[i].Type == LocType::Estate) {
+			Estate* myEstate = static_cast<Estate*>(&TheMap[i]);
+			SetCursorPosistion(coord.X + 2, coord.Y + 2);
+			if (myEstate->HasBarrier == 1) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+				wcout << L"<路障>";
+			}
+			else {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), whiteText);				
+				wcout << L"      ";
+			}
+		}
 	}
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), whiteText);

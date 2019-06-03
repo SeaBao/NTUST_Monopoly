@@ -226,7 +226,7 @@ void GameEnd()
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD Position;
-	Position.X = 99;
+	Position.X = 15;
 	Position.Y = 16;
 	SetConsoleCursorPosition(hOut, Position);
 	wcout << L"勝利者為 ";
@@ -315,7 +315,24 @@ void OperatingPlayers::GameStart()
 				theMenu.printMenu();
 				command = _getch();
 			}
-			if (command == 'B' || command == 'b')
+			if (command == 'N' || command == 'n')
+			{
+				if (RoadBarrier() == 1)
+				{
+					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
+					command = _getch();
+				}
+				else
+				{
+					Position.X = 15;
+					Position.Y = 26;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"案任意鍵繼續擲骰子";
+					command = _getch();
+				}
+
+			}
+			 if (command == 'B' || command == 'b')
 			{
 
 				if (CheatedDice())
@@ -346,22 +363,7 @@ void OperatingPlayers::GameStart()
 				}
 				
 			}
-			else if (command == 'N' || command == 'n')
-			{
-				if (RoadBarrier() == 1)
-				{
-					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
-				}
-				else
-				{
-					Position.X = 15;
-					Position.Y = 26;
-					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"案任意鍵繼續擲骰子";
-					command = _getch();
-				}
-				
-			}
+			
 		}
 		Position.X = 15;
 		Position.Y = 26;
@@ -392,7 +394,7 @@ void OperatingPlayers::GameStart()
 
 		if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
 		{
-			TheMap.GetCurrentPlayer().Stop = 1;
+			TheMap.GetCurrentPlayer().Stop += 2;
 			TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
 		}
 		TheMap.RefreshPlayerLocation();
@@ -409,7 +411,7 @@ void OperatingPlayers::GameStart()
 				Position.Y = 20;
 				SetConsoleCursorPosition(hOut, Position);
 				wcout << L"遇到韓國魚游行，停止行動2回合";
-				TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 2;
+				TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
 			
 				break;
 			case 2:
@@ -450,6 +452,7 @@ void OperatingPlayers::GameStart()
 				Position.Y = 20;
 				SetConsoleCursorPosition(hOut, Position);
 				wcout << L"不小心出了車禍...";
+				TheMap.GetCurrentPlayer().Money = 0;
 				TheMap.GetCurrentPlayer().Stop = -1;
 				break;
 			case 2:

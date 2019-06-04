@@ -440,6 +440,7 @@ void GameMap::TurnNextRound()
 			if (PlayerList[i].Stop == 0) {
 				_CurrentPlayerID = PlayerList[i].ID;
 				isFound = true;
+				_PlayerTurns--;
 				break;
 			}
 		}
@@ -449,11 +450,11 @@ void GameMap::TurnNextRound()
 				if (PlayerList[i].Stop == 0) {
 					_CurrentPlayerID = PlayerList[i].ID;
 					isFound = true;
+					_PlayerTurns--;
 					break;
 				}
 			}
-		}
-		_PlayerTurns--;
+		}	
 
 		if (!isFound) {
 			for (int i = 0; i < PlayerList.size(); i++) {
@@ -461,7 +462,7 @@ void GameMap::TurnNextRound()
 					PlayerList[i].Stop -= 1;
 				}
 			}
-			_PlayerTurns--;
+			RemainingRounds--;
 		}
 	}
 

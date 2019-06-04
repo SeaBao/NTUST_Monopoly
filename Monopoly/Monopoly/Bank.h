@@ -13,9 +13,10 @@ public:
 	void printATM();
 	void printWord(int y);
 	void printMoney();
-	int readAM(int pID);
+	void readAM();
 	void writeAM();
 	void payDebt();
+	void restore();
 	
 private:
 	COORD pos;

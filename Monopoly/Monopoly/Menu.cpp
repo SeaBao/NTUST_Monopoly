@@ -2,6 +2,7 @@
 #include "Utility.h"
 #include "Bank.h"
 #include "Stack.h"
+#include "mainScreen.h"
 
 Menu theMenu;
 
@@ -53,7 +54,7 @@ void Menu::printMenu()
 			}
 			else if (pos.Y == 30)//儲存遊戲
 			{
-
+				theBank.writeAM();
 			}
 			else if (pos.Y == 31)//進入銀行
 			{
@@ -67,6 +68,7 @@ void Menu::printMenu()
 			}
 			else if (pos.Y == 33)//離開遊戲
 			{
+				theBank.restore();
 				exit(1);
 			}
 		}

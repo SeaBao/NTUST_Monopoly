@@ -30,7 +30,6 @@ int main() {
 	cfi.FontWeight = FW_NORMAL;
 	SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
 
-	theScreen.printMainScreen();
 
 	TheMap.ReadMap("Basemap.txt");
 	TheMap.PrintMap();

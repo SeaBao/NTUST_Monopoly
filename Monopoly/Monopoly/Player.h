@@ -21,5 +21,9 @@ public:
 	int Position;
 	int Stop;
 
+	//Items
+	int BarrierAmount;
+	int DiceAmount;
+
 	vector<Property> OwnedProperties;
 };

@@ -6,6 +6,7 @@
 #include "Utility.h"
 #include "Stack.h"
 #include "Bank.h"
+#include "mainScreen.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ int main() {
 	cfi.FontFamily = FF_DONTCARE;
 	cfi.FontWeight = FW_NORMAL;
 	SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
+
 
 	TheMap.ReadMap("Basemap.txt");
 	TheMap.PrintMap();

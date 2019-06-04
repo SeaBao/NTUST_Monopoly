@@ -264,7 +264,8 @@ void OperatingPlayers::GameStart()
 	theStack.readStackFile("Stacks.txt");
 	theBank.printMoney();
 	command = _getch();
-	while (command == 27)//esc
+	
+	if (command == 27)//esc
 	{
 		theMenu.printMenu();
 		command = _getch();
@@ -275,6 +276,15 @@ void OperatingPlayers::GameStart()
 	
 	while (command != EOF)
 	{
+		Position.X = 15;
+		Position.Y = 26;
+		SetConsoleCursorPosition(hOut, Position);
+		wcout << L"                                                        ";
+		if (command == 27)//esc
+		{
+			theMenu.printMenu();
+			command = _getch();
+		}
 		int CheatedDicePoint = 0;
 		
 		Position.X = 99;
@@ -318,17 +328,22 @@ void OperatingPlayers::GameStart()
 			theStack.rateChange("Stacks.txt");
 			theStack.readStackFile("Stacks.txt");
 			command = _getch();
-			while (command == 27)//esc
+			if (command == 27)//esc
 			{
 				theMenu.printMenu();
 				command = _getch();
 			}
-			if (command == 'N' || command == 'n')
+			if ((command == 'N' || command == 'n')&& TheMap.GetCurrentPlayer().BarrierAmount>0)
 			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                        ";
 				if (RoadBarrier() == 1)
 				{
 					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
 					TheMap.RefreshEstateLabel();
+					TheMap.GetCurrentPlayer().BarrierAmount--;
 					command = _getch();
 				}
 				else
@@ -340,9 +355,32 @@ void OperatingPlayers::GameStart()
 					command = _getch();
 				}
 
+
 			}
-			 if (command == 'B' || command == 'b')
+			else if ((command == 'N' || command == 'n') && TheMap.GetCurrentPlayer().BarrierAmount == 0)
 			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"道具已使用完畢";
+				command = _getch();
+
+			}
+			else if ((command == 'B' || command == 'b') && TheMap.GetCurrentPlayer().DiceAmount == 0)
+			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"道具已使用完畢";
+				command = _getch();
+
+			}
+			else if ((command == 'B' || command == 'b' )&& TheMap.GetCurrentPlayer().DiceAmount > 0)
+			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                        ";
 
 				if (CheatedDice())
 				{
@@ -362,6 +400,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 20;
 					SetConsoleCursorPosition(hOut, Position);
+					TheMap.GetCurrentPlayer().DiceAmount--;
 					command = 3;
 				}
 				else
@@ -375,305 +414,1267 @@ void OperatingPlayers::GameStart()
 				}
 				
 			}
-			
-		}
-		
-		Position.X = 15;
-		Position.Y = 26;
-		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"                                                        ";
-		int oneRound = 0;
-		srand(static_cast<int>(time(NULL)));
-		Position.X = 15;
-		Position.Y = 12;
-		SetConsoleCursorPosition(hOut, Position);
-
-		
-		int DicePoint = (rand() % 6) + 1;
-		if (CheatedDicePoint != 0)
-		{
-			DicePoint = CheatedDicePoint;
-		}
-	
-			wcout << L"擲出的點數為 " << DicePoint << L" 點";
-		
-	
-
-		TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position + DicePoint;
-
-		if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position >= 28)
-		{
-			TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position % 28;
-			oneRound = 1;
-		}
-
-		if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
-		{
-			TheMap.GetCurrentPlayer().Stop += 2;
-
-
-			TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
-			TheMap.RefreshEstateLabel();
-		}
-		TheMap.RefreshPlayerLocation();
-	
-		//命運
-		if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Destiny)
-		{
-			srand(static_cast<int>(time(NULL)));
-			int DestinyCase = (rand() % 3) + 1;
-			switch (DestinyCase)
+			else
 			{
-			case 1:
 				Position.X = 15;
-				Position.Y = 20;
+				Position.Y = 22;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"遇到韓國魚游行，停止行動2回合";
-				TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
-			
-				break;
-			case 2:
+				wcout << L"                                                        ";
 				Position.X = 15;
-				Position.Y = 20;
+				Position.Y = 26;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"不小心走進高雄市，獲得發財金200元";
-				TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 200;
-				break;
-			case 3:
+				wcout << L"                                                        ";
+				int oneRound = 0;
+				srand(static_cast<int>(time(NULL)));
 				Position.X = 15;
-				Position.Y = 20;
+				Position.Y = 12;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"在路上撿到炒房秘笈，自身所有土地產升級一級(除了已最高級)";
-				for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+
+				int DicePoint = (rand() % 6) + 1;
+				if (CheatedDicePoint != 0)
 				{
-					if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level < 3)
+					DicePoint = CheatedDicePoint;
+				}
+				wcout << L"擲出的點數為 " << DicePoint << L" 點";
+				TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position + DicePoint;
+
+				if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position >= 28)
+				{
+					TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position % 28;
+					oneRound = 1;
+				}
+
+				if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
+				{
+					TheMap.GetCurrentPlayer().Stop += 2;
+
+
+					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
+					TheMap.RefreshEstateLabel();
+				}
+				TheMap.RefreshPlayerLocation();
+
+				//命運
+				if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Destiny)
+				{
+					srand(static_cast<int>(time(NULL)));
+					int DestinyCase = (rand() % 3) + 1;
+					DestinyCase = 1;
+					switch (DestinyCase)
 					{
-						TheMap.GetCurrentPlayer().OwnedProperties[i].Level++;
+					case 1:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"遇到韓國魚游行，停止行動2回合";
+						TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
+
+						break;
+					case 2:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"不小心走進高雄市，獲得發財金200元";
+						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 200;
+						break;
+					case 3:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"在路上撿到炒房秘笈，自身所有土地產升級一級(除了已最高級)";
+						for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+						{
+							if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level < 3)
+							{
+								TheMap.GetCurrentPlayer().OwnedProperties[i].Level++;
+							}
+
+						}
+
+						break;
+					}
+
+
+				}
+				//機會
+				else if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Chance)
+				{
+					srand(static_cast<int>(time(NULL)));
+					int ChanceCase = (rand() % 3) + 1;
+					switch (ChanceCase)
+					{
+					case 1:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"不小心出了車禍...";
+						TheMap.GetCurrentPlayer().Money = 0;
+						TheMap.GetCurrentPlayer().Stop = -1;
+						TheMap.GetCurrentPlayer().OwnedProperties.clear();
+						TheMap.RefreshEstateLabel();
+						break;
+					case 2:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"被查出吸食毒品，罰金500";
+						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - 200;
+						break;
+					case 3:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"遠雄幫你蓋的房子被發現偷工減料，所有房地產減少一級";
+						for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+						{
+							if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level > 1)
+							{
+								TheMap.GetCurrentPlayer().OwnedProperties[i].Level--;
+							}
+
+						}
+
+						break;
 					}
 
 				}
+				else
+				{
+					if (oneRound == 1)
+					{
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+						command = _getch();
+						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 
-				break;
+
+					}
+					if (TheMap.GetCurrentPlayer().Position == 0)
+					{
+
+					}
+					else
+					{
+						//土地有沒有人購買
+						if (isEstateOwned(TheMap.GetCurrentPlayer().Position))
+						{
+							int tempposid = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).ID;
+							int tempcurid = TheMap.GetCurrentPlayer().ID;
+							//如果是自己的地 
+							if (tempposid == tempcurid)
+							{
+
+
+								int pos = 0;
+								for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+								{
+									if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position) == TheMap.GetCurrentPlayer().OwnedProperties[i].Estate)
+									{
+										pos = i;
+									}
+								}
+								//如果升級次數還沒超過3次
+								if (TheMap.GetCurrentPlayer().OwnedProperties[pos].Level != 3)
+								{
+
+									if (UpdateLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position, pos))
+									{
+										TheMap.GetCurrentPlayer().OwnedProperties[pos].Level++;
+									}
+									else
+									{
+
+									}
+								}
+								else
+								{
+
+								}
+							}
+							else if ((tempposid) != (TheMap.GetCurrentPlayer().ID))
+							{
+								//徵收土地錢	
+								int pos = -1;
+
+								int mm = TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position;
+								int nn = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[0].Estate.Position;
+								for (int i = 0; i < TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties.size(); i++)
+								{
+
+									if (TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position == TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[i].Estate.Position)
+									{
+
+										pos = i;
+									}
+								}
+								Position.X = 15;
+								Position.Y = 20;
+								SetConsoleCursorPosition(hOut, Position);
+								wcout << TheMap.GetCurrentPlayer().ID + 1 << L" 號玩家目前在 " << tempposid + 1 << L"的格子裡";
+								Position.X = 15;
+								Position.Y = 22;
+								SetConsoleCursorPosition(hOut, Position);
+								wcout << L" 需要繳納 " << static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] << L" 元";
+								if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] < 0)
+								{
+									TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
+									TheMap.GetCurrentPlayer().Money = 0;
+									TheMap.GetCurrentPlayer().Stop = -1;
+									TheMap.GetCurrentPlayer().OwnedProperties.clear();
+									TheMap.RefreshEstateLabel();
+								}
+								else
+								{
+									TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+									TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+								}
+
+							}
+						}
+						else
+						{
+
+							//購買
+							if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice < 0)
+							{
+
+							}
+							else if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position))
+							{
+								hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+								SetConsoleCursorPosition(hOut, Position);
+								//購買成功
+
+								if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice > 0)
+								{
+									TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice;
+									Property temp;
+									temp.Estate = *static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position]);
+									temp.Level = 0;
+									TheMap.GetCurrentPlayer().OwnedProperties.push_back(temp);
+
+									TheMap.RefreshEstateLabel();
+								}
+								else
+								{
+
+								}
+
+
+
+							}
+							else
+							{
+								hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+								SetConsoleCursorPosition(hOut, Position);
+							}
+						}
+
+					}
+
+
+				}
+
+				TheMap.TurnNextRound();
+				theBank.printMoney();
+				PlayerPanel.PrintPanel();
+				Position.X = 99;
+				Position.Y = 9;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
+				theBank.printMoney();
+				command = _getch();
+
+				Position.X = 15;
+				Position.Y = 12;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                        ";
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                        ";
+				Position.X = 15;
+				Position.Y = 20;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                         ";
+				Position.X = 15;
+				Position.Y = 22;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                         ";
+			}
+			if (CheatedDicePoint != 0)
+			{
+				Position.X = 15;
+				Position.Y = 22;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                        ";
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                        ";
+				int oneRound = 0;
+				srand(static_cast<int>(time(NULL)));
+				Position.X = 15;
+				Position.Y = 12;
+				SetConsoleCursorPosition(hOut, Position);
+
+				int DicePoint = (rand() % 6) + 1;
+				if (CheatedDicePoint != 0)
+				{
+					DicePoint = CheatedDicePoint;
+				}
+				wcout << L"擲出的點數為 " << DicePoint << L" 點";
+				TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position + DicePoint;
+
+				if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position >= 28)
+				{
+					TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position % 28;
+					oneRound = 1;
+				}
+
+				if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
+				{
+					TheMap.GetCurrentPlayer().Stop += 2;
+
+
+					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
+					TheMap.RefreshEstateLabel();
+				}
+				TheMap.RefreshPlayerLocation();
+
+				//命運
+				if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Destiny)
+				{
+					srand(static_cast<int>(time(NULL)));
+					int DestinyCase = (rand() % 3) + 1;
+					DestinyCase = 1;
+					switch (DestinyCase)
+					{
+					case 1:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"遇到韓國魚游行，停止行動2回合";
+						TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
+
+						break;
+					case 2:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"不小心走進高雄市，獲得發財金200元";
+						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 200;
+						break;
+					case 3:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"在路上撿到炒房秘笈，自身所有土地產升級一級(除了已最高級)";
+						for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+						{
+							if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level < 3)
+							{
+								TheMap.GetCurrentPlayer().OwnedProperties[i].Level++;
+							}
+
+						}
+
+						break;
+					}
+
+
+				}
+				//機會
+				else if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Chance)
+				{
+					srand(static_cast<int>(time(NULL)));
+					int ChanceCase = (rand() % 3) + 1;
+					switch (ChanceCase)
+					{
+					case 1:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"不小心出了車禍...";
+						TheMap.GetCurrentPlayer().Money = 0;
+						TheMap.GetCurrentPlayer().Stop = -1;
+						TheMap.GetCurrentPlayer().OwnedProperties.clear();
+						TheMap.RefreshEstateLabel();
+						break;
+					case 2:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"被查出吸食毒品，罰金500";
+						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - 200;
+						break;
+					case 3:
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"遠雄幫你蓋的房子被發現偷工減料，所有房地產減少一級";
+						for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+						{
+							if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level > 1)
+							{
+								TheMap.GetCurrentPlayer().OwnedProperties[i].Level--;
+							}
+
+						}
+
+						break;
+					}
+
+				}
+				else
+				{
+					if (oneRound == 1)
+					{
+						Position.X = 15;
+						Position.Y = 20;
+						SetConsoleCursorPosition(hOut, Position);
+						wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+						command = _getch();
+						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
+
+
+					}
+					if (TheMap.GetCurrentPlayer().Position == 0)
+					{
+
+					}
+					else
+					{
+						//土地有沒有人購買
+						if (isEstateOwned(TheMap.GetCurrentPlayer().Position))
+						{
+							int tempposid = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).ID;
+							int tempcurid = TheMap.GetCurrentPlayer().ID;
+							//如果是自己的地 
+							if (tempposid == tempcurid)
+							{
+
+
+								int pos = 0;
+								for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+								{
+									if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position) == TheMap.GetCurrentPlayer().OwnedProperties[i].Estate)
+									{
+										pos = i;
+									}
+								}
+								//如果升級次數還沒超過3次
+								if (TheMap.GetCurrentPlayer().OwnedProperties[pos].Level != 3)
+								{
+
+									if (UpdateLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position, pos))
+									{
+										TheMap.GetCurrentPlayer().OwnedProperties[pos].Level++;
+									}
+									else
+									{
+
+									}
+								}
+								else
+								{
+
+								}
+							}
+							else if ((tempposid) != (TheMap.GetCurrentPlayer().ID))
+							{
+								//徵收土地錢	
+								int pos = -1;
+
+								int mm = TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position;
+								int nn = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[0].Estate.Position;
+								for (int i = 0; i < TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties.size(); i++)
+								{
+
+									if (TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position == TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[i].Estate.Position)
+									{
+
+										pos = i;
+									}
+								}
+								Position.X = 15;
+								Position.Y = 20;
+								SetConsoleCursorPosition(hOut, Position);
+								wcout << TheMap.GetCurrentPlayer().ID + 1 << L" 號玩家目前在 " << tempposid + 1 << L"的格子裡";
+								Position.X = 15;
+								Position.Y = 22;
+								SetConsoleCursorPosition(hOut, Position);
+								wcout << L" 需要繳納 " << static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] << L" 元";
+								if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] < 0)
+								{
+									TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
+									TheMap.GetCurrentPlayer().Money = 0;
+									TheMap.GetCurrentPlayer().Stop = -1;
+									TheMap.GetCurrentPlayer().OwnedProperties.clear();
+									TheMap.RefreshEstateLabel();
+								}
+								else
+								{
+									TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+									TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+								}
+
+							}
+						}
+						else
+						{
+
+							//購買
+							if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice < 0)
+							{
+
+							}
+							else if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position))
+							{
+								hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+								SetConsoleCursorPosition(hOut, Position);
+								//購買成功
+
+								if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice > 0)
+								{
+									TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice;
+									Property temp;
+									temp.Estate = *static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position]);
+									temp.Level = 0;
+									TheMap.GetCurrentPlayer().OwnedProperties.push_back(temp);
+
+									TheMap.RefreshEstateLabel();
+								}
+								else
+								{
+
+								}
+
+
+
+							}
+							else
+							{
+								hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+								SetConsoleCursorPosition(hOut, Position);
+							}
+						}
+
+					}
+
+
+				}
+
+				TheMap.TurnNextRound();
+				theBank.printMoney();
+				PlayerPanel.PrintPanel();
+				Position.X = 99;
+				Position.Y = 9;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
+				theBank.printMoney();
+				command = _getch();
+
+				Position.X = 15;
+				Position.Y = 12;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                        ";
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                        ";
+				Position.X = 15;
+				Position.Y = 20;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                         ";
+				Position.X = 15;
+				Position.Y = 22;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"                                                         ";
+				}
+			
+		}
+		else
+		{
+		if ((command == 'N' || command == 'n') && TheMap.GetCurrentPlayer().BarrierAmount > 0)
+		{
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			if (RoadBarrier() == 1)
+			{
+				TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
+				TheMap.RefreshEstateLabel();
+				TheMap.GetCurrentPlayer().BarrierAmount--;
+				command = _getch();
+			}
+			else
+			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"案任意鍵繼續擲骰子";
+				command = _getch();
 			}
 
 
 		}
-		//機會
-		else if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Chance)
+		else if ((command == 'N' || command == 'n') && TheMap.GetCurrentPlayer().BarrierAmount == 0)
 		{
-			srand(static_cast<int>(time(NULL)));
-			int ChanceCase = (rand() % 3) + 1;
-			switch (ChanceCase)
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"道具已使用完畢";
+			command = _getch();
+			
+		}
+		else if ((command == 'B' || command == 'b') && TheMap.GetCurrentPlayer().DiceAmount == 0)
+		{
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"道具已使用完畢";
+			command = _getch();
+
+		}
+		else if ((command == 'B' || command == 'b') && TheMap.GetCurrentPlayer().DiceAmount > 0)
+		{
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+
+			if (CheatedDice())
 			{
-			case 1:
 				Position.X = 15;
-				Position.Y = 20;
+				Position.Y = 26;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"不小心出了車禍...";
-				TheMap.GetCurrentPlayer().Money = 0;
-				TheMap.GetCurrentPlayer().Stop = -1;
-				TheMap.GetCurrentPlayer().OwnedProperties.clear();
-				TheMap.RefreshEstateLabel();
-				break;
-			case 2:
-				Position.X = 15;
-				Position.Y = 20;
-				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"被查出吸食毒品，罰金500";
-				TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - 200;
-				break;
-			case 3:
-				Position.X = 15;
-				Position.Y = 20;
-				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"遠雄幫你蓋的房子被發現偷工減料，所有房地產減少一級";
-				for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+				wcout << L"請輸入指定步數(1~6) : ";
+				cin >> CheatedDicePoint;
+				while (CheatedDicePoint > 6 || CheatedDicePoint < 0)
 				{
-					if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level > 1)
-					{
-						TheMap.GetCurrentPlayer().OwnedProperties[i].Level--;
-					}
-
+					Position.X = 15;
+					Position.Y = 26;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"請重新輸入";
+					cin >> CheatedDicePoint;
 				}
+				Position.X = 15;
+				Position.Y = 20;
+				SetConsoleCursorPosition(hOut, Position);
+				command = 3;
+				TheMap.GetCurrentPlayer().DiceAmount--;
+			}
+			else
+			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"案任意鍵繼續擲骰子";
+				command = _getch();
 
-				break;
 			}
 
 		}
 		else
 		{
-			if (oneRound == 1)
+			Position.X = 15;
+			Position.Y = 22;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			int oneRound = 0;
+			srand(static_cast<int>(time(NULL)));
+			Position.X = 15;
+			Position.Y = 12;
+			SetConsoleCursorPosition(hOut, Position);
+
+			int DicePoint = (rand() % 6) + 1;
+			if (CheatedDicePoint != 0)
 			{
-				Position.X = 15;
-				Position.Y = 20;
-				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"經過起點，獲得2000元  案任意鍵繼續";
-				command = _getch();
-				TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
-				
+				DicePoint = CheatedDicePoint;
+			}
+			wcout << L"擲出的點數為 " << DicePoint << L" 點";
+			TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position + DicePoint;
+
+			if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position >= 28)
+			{
+				TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position % 28;
+				oneRound = 1;
+			}
+
+			if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
+			{
+				TheMap.GetCurrentPlayer().Stop += 2;
+
+
+				TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
+				TheMap.RefreshEstateLabel();
+			}
+			TheMap.RefreshPlayerLocation();
+
+			//命運
+			if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Destiny)
+			{
+				srand(static_cast<int>(time(NULL)));
+				int DestinyCase = (rand() % 3) + 1;
+				DestinyCase = 1;
+				switch (DestinyCase)
+				{
+				case 1:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"遇到韓國魚游行，停止行動2回合";
+					TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
+
+					break;
+				case 2:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"不小心走進高雄市，獲得發財金200元";
+					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 200;
+					break;
+				case 3:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"在路上撿到炒房秘笈，自身所有土地產升級一級(除了已最高級)";
+					for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+					{
+						if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level < 3)
+						{
+							TheMap.GetCurrentPlayer().OwnedProperties[i].Level++;
+						}
+
+					}
+
+					break;
+				}
+
 
 			}
-			if (TheMap.GetCurrentPlayer().Position == 0)
+			//機會
+			else if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Chance)
 			{
+				srand(static_cast<int>(time(NULL)));
+				int ChanceCase = (rand() % 3) + 1;
+				switch (ChanceCase)
+				{
+				case 1:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"不小心出了車禍...";
+					TheMap.GetCurrentPlayer().Money = 0;
+					TheMap.GetCurrentPlayer().Stop = -1;
+					TheMap.GetCurrentPlayer().OwnedProperties.clear();
+					TheMap.RefreshEstateLabel();
+					break;
+				case 2:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"被查出吸食毒品，罰金500";
+					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - 200;
+					break;
+				case 3:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"遠雄幫你蓋的房子被發現偷工減料，所有房地產減少一級";
+					for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+					{
+						if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level > 1)
+						{
+							TheMap.GetCurrentPlayer().OwnedProperties[i].Level--;
+						}
+
+					}
+
+					break;
+				}
 
 			}
 			else
 			{
-				//土地有沒有人購買
-				if (isEstateOwned(TheMap.GetCurrentPlayer().Position))
+				if (oneRound == 1)
 				{
-					int tempposid = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).ID;
-					int tempcurid = TheMap.GetCurrentPlayer().ID;
-					//如果是自己的地 
-					if (tempposid == tempcurid)
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+					command = _getch();
+					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
+
+
+				}
+				if (TheMap.GetCurrentPlayer().Position == 0)
+				{
+
+				}
+				else
+				{
+					//土地有沒有人購買
+					if (isEstateOwned(TheMap.GetCurrentPlayer().Position))
 					{
-
-
-						int pos = 0;
-						for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+						int tempposid = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).ID;
+						int tempcurid = TheMap.GetCurrentPlayer().ID;
+						//如果是自己的地 
+						if (tempposid == tempcurid)
 						{
-							if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position) == TheMap.GetCurrentPlayer().OwnedProperties[i].Estate)
+
+
+							int pos = 0;
+							for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
 							{
-								pos = i;
+								if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position) == TheMap.GetCurrentPlayer().OwnedProperties[i].Estate)
+								{
+									pos = i;
+								}
 							}
-						}
-						//如果升級次數還沒超過3次
-						if (TheMap.GetCurrentPlayer().OwnedProperties[pos].Level != 3)
-						{
-
-							if (UpdateLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position, pos))
+							//如果升級次數還沒超過3次
+							if (TheMap.GetCurrentPlayer().OwnedProperties[pos].Level != 3)
 							{
-								TheMap.GetCurrentPlayer().OwnedProperties[pos].Level++;
+
+								if (UpdateLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position, pos))
+								{
+									TheMap.GetCurrentPlayer().OwnedProperties[pos].Level++;
+								}
+								else
+								{
+
+								}
 							}
 							else
 							{
 
 							}
 						}
-						else
+						else if ((tempposid) != (TheMap.GetCurrentPlayer().ID))
 						{
+							//徵收土地錢	
+							int pos = -1;
 
-						}
-					}
-					else if ((tempposid) != (TheMap.GetCurrentPlayer().ID))
-					{
-						//徵收土地錢	
-						int pos = -1;
-
-						int mm = TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position;
-						int nn = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[0].Estate.Position;
-						for (int i = 0; i < TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties.size(); i++)
-						{
-
-							if (TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position == TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[i].Estate.Position)
+							int mm = TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position;
+							int nn = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[0].Estate.Position;
+							for (int i = 0; i < TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties.size(); i++)
 							{
 
-								pos = i;
+								if (TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position == TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[i].Estate.Position)
+								{
+
+									pos = i;
+								}
 							}
-						}
-						Position.X = 15;
-						Position.Y = 20;
-						SetConsoleCursorPosition(hOut, Position);
-						wcout << TheMap.GetCurrentPlayer().ID + 1 << L" 號玩家目前在 " << tempposid + 1 << L"的格子裡";
-						Position.X = 15;
-						Position.Y = 22;
-						SetConsoleCursorPosition(hOut, Position);
-						wcout << L" 需要繳納 " << static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] << L" 元";
-						if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] < 0)
-						{
-							TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
-							TheMap.GetCurrentPlayer().Money = 0;
-							TheMap.GetCurrentPlayer().Stop = -1;
-							TheMap.GetCurrentPlayer().OwnedProperties.clear();
-							TheMap.RefreshEstateLabel();
-						}
-						else
-						{
-							TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
-							TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
-						}
-
-					}
-				}
-				else
-				{
-
-					//購買
-					if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice < 0)
-					{
-
-					}
-					else if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position))
-					{
-						hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
-						SetConsoleCursorPosition(hOut, Position);
-						//購買成功
-
-						if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice > 0)
-						{
-							TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice;
-							Property temp;
-							temp.Estate = *static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position]);
-							temp.Level = 0;
-							TheMap.GetCurrentPlayer().OwnedProperties.push_back(temp);
-
-							TheMap.RefreshEstateLabel();
-						}
-						else
-						{
+							Position.X = 15;
+							Position.Y = 20;
+							SetConsoleCursorPosition(hOut, Position);
+							wcout << TheMap.GetCurrentPlayer().ID + 1 << L" 號玩家目前在 " << tempposid + 1 << L"的格子裡";
+							Position.X = 15;
+							Position.Y = 22;
+							SetConsoleCursorPosition(hOut, Position);
+							wcout << L" 需要繳納 " << static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] << L" 元";
+							if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] < 0)
+							{
+								TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
+								TheMap.GetCurrentPlayer().Money = 0;
+								TheMap.GetCurrentPlayer().Stop = -1;
+								TheMap.GetCurrentPlayer().OwnedProperties.clear();
+								TheMap.RefreshEstateLabel();
+							}
+							else
+							{
+								TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+								TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+							}
 
 						}
-
-
-
 					}
 					else
 					{
-						hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-						SetConsoleCursorPosition(hOut, Position);
+
+						//購買
+						if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice < 0)
+						{
+
+						}
+						else if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position))
+						{
+							hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+							SetConsoleCursorPosition(hOut, Position);
+							//購買成功
+
+							if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice > 0)
+							{
+								TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice;
+								Property temp;
+								temp.Estate = *static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position]);
+								temp.Level = 0;
+								TheMap.GetCurrentPlayer().OwnedProperties.push_back(temp);
+
+								TheMap.RefreshEstateLabel();
+							}
+							else
+							{
+
+							}
+
+
+
+						}
+						else
+						{
+							hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+							SetConsoleCursorPosition(hOut, Position);
+						}
 					}
+
+				}
+
+
+			}
+
+			TheMap.TurnNextRound();
+			theBank.printMoney();
+			PlayerPanel.PrintPanel();
+			Position.X = 99;
+			Position.Y = 9;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
+			theBank.printMoney();
+			command = _getch();
+
+			Position.X = 15;
+			Position.Y = 12;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			Position.X = 15;
+			Position.Y = 20;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                         ";
+			Position.X = 15;
+			Position.Y = 22;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                         ";
+		}
+		if (CheatedDicePoint != 0)
+		{
+			Position.X = 15;
+			Position.Y = 22;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			int oneRound = 0;
+			srand(static_cast<int>(time(NULL)));
+			Position.X = 15;
+			Position.Y = 12;
+			SetConsoleCursorPosition(hOut, Position);
+
+			int DicePoint = (rand() % 6) + 1;
+			if (CheatedDicePoint != 0)
+			{
+				DicePoint = CheatedDicePoint;
+			}
+			wcout << L"擲出的點數為 " << DicePoint << L" 點";
+			TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position + DicePoint;
+
+			if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position >= 28)
+			{
+				TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position % 28;
+				oneRound = 1;
+			}
+
+			if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
+			{
+				TheMap.GetCurrentPlayer().Stop += 2;
+
+
+				TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
+				TheMap.RefreshEstateLabel();
+			}
+			TheMap.RefreshPlayerLocation();
+
+			//命運
+			if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Destiny)
+			{
+				srand(static_cast<int>(time(NULL)));
+				int DestinyCase = (rand() % 3) + 1;
+				DestinyCase = 1;
+				switch (DestinyCase)
+				{
+				case 1:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"遇到韓國魚游行，停止行動2回合";
+					TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
+
+					break;
+				case 2:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"不小心走進高雄市，獲得發財金200元";
+					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 200;
+					break;
+				case 3:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"在路上撿到炒房秘笈，自身所有土地產升級一級(除了已最高級)";
+					for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+					{
+						if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level < 3)
+						{
+							TheMap.GetCurrentPlayer().OwnedProperties[i].Level++;
+						}
+
+					}
+
+					break;
+				}
+
+
+			}
+			//機會
+			else if (TheMap[TheMap.GetCurrentPlayer().Position].Type == LocType::Chance)
+			{
+				srand(static_cast<int>(time(NULL)));
+				int ChanceCase = (rand() % 3) + 1;
+				switch (ChanceCase)
+				{
+				case 1:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"不小心出了車禍...";
+					TheMap.GetCurrentPlayer().Money = 0;
+					TheMap.GetCurrentPlayer().Stop = -1;
+					TheMap.GetCurrentPlayer().OwnedProperties.clear();
+					TheMap.RefreshEstateLabel();
+					break;
+				case 2:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"被查出吸食毒品，罰金500";
+					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - 200;
+					break;
+				case 3:
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"遠雄幫你蓋的房子被發現偷工減料，所有房地產減少一級";
+					for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+					{
+						if (TheMap.GetCurrentPlayer().OwnedProperties[i].Level > 1)
+						{
+							TheMap.GetCurrentPlayer().OwnedProperties[i].Level--;
+						}
+
+					}
+
+					break;
 				}
 
 			}
-				
+			else
+			{
+				if (oneRound == 1)
+				{
+					Position.X = 15;
+					Position.Y = 20;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+					command = _getch();
+					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 
+
+				}
+				if (TheMap.GetCurrentPlayer().Position == 0)
+				{
+
+				}
+				else
+				{
+					//土地有沒有人購買
+					if (isEstateOwned(TheMap.GetCurrentPlayer().Position))
+					{
+						int tempposid = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).ID;
+						int tempcurid = TheMap.GetCurrentPlayer().ID;
+						//如果是自己的地 
+						if (tempposid == tempcurid)
+						{
+
+
+							int pos = 0;
+							for (int i = 0; i < TheMap.GetCurrentPlayer().OwnedProperties.size(); i++)
+							{
+								if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position) == TheMap.GetCurrentPlayer().OwnedProperties[i].Estate)
+								{
+									pos = i;
+								}
+							}
+							//如果升級次數還沒超過3次
+							if (TheMap.GetCurrentPlayer().OwnedProperties[pos].Level != 3)
+							{
+
+								if (UpdateLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position, pos))
+								{
+									TheMap.GetCurrentPlayer().OwnedProperties[pos].Level++;
+								}
+								else
+								{
+
+								}
+							}
+							else
+							{
+
+							}
+						}
+						else if ((tempposid) != (TheMap.GetCurrentPlayer().ID))
+						{
+							//徵收土地錢	
+							int pos = -1;
+
+							int mm = TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position;
+							int nn = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[0].Estate.Position;
+							for (int i = 0; i < TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties.size(); i++)
+							{
+
+								if (TheMap.GetEstateFromPos(TheMap.GetCurrentPlayer().Position).Position == TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[i].Estate.Position)
+								{
+
+									pos = i;
+								}
+							}
+							Position.X = 15;
+							Position.Y = 20;
+							SetConsoleCursorPosition(hOut, Position);
+							wcout << TheMap.GetCurrentPlayer().ID + 1 << L" 號玩家目前在 " << tempposid + 1 << L"的格子裡";
+							Position.X = 15;
+							Position.Y = 22;
+							SetConsoleCursorPosition(hOut, Position);
+							wcout << L" 需要繳納 " << static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] << L" 元";
+							if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] < 0)
+							{
+								TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
+								TheMap.GetCurrentPlayer().Money = 0;
+								TheMap.GetCurrentPlayer().Stop = -1;
+								TheMap.GetCurrentPlayer().OwnedProperties.clear();
+								TheMap.RefreshEstateLabel();
+							}
+							else
+							{
+								TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+								TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+							}
+
+						}
+					}
+					else
+					{
+
+						//購買
+						if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice < 0)
+						{
+
+						}
+						else if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position))
+						{
+							hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+							SetConsoleCursorPosition(hOut, Position);
+							//購買成功
+
+							if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice > 0)
+							{
+								TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice;
+								Property temp;
+								temp.Estate = *static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position]);
+								temp.Level = 0;
+								TheMap.GetCurrentPlayer().OwnedProperties.push_back(temp);
+
+								TheMap.RefreshEstateLabel();
+							}
+							else
+							{
+
+							}
+
+
+
+						}
+						else
+						{
+							hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+							SetConsoleCursorPosition(hOut, Position);
+						}
+					}
+
+				}
+
+
+			}
+
+			TheMap.TurnNextRound();
+			theBank.printMoney();
+			PlayerPanel.PrintPanel();
+			Position.X = 99;
+			Position.Y = 9;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
+			theBank.printMoney();
+			command = _getch();
+
+			Position.X = 15;
+			Position.Y = 12;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                        ";
+			Position.X = 15;
+			Position.Y = 20;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                         ";
+			Position.X = 15;
+			Position.Y = 22;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"                                                         ";
 		}
 
-
-
-
-
-		TheMap.TurnNextRound();
-		theBank.printMoney();
-		PlayerPanel.PrintPanel();
-		Position.X = 99;
-		Position.Y = 9;
-		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"目前回合數為 " << 21-TheMap.GetRemainingRounds();
-		theBank.printMoney();
-		command = _getch();
-
-		Position.X = 15;
-		Position.Y = 12;
-		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"                                                        ";
-		Position.X = 15;
-		Position.Y = 26;
-		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"                                                        ";
-		Position.X = 15;
-		Position.Y = 20;
-		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"                                                         ";
-		Position.X = 15;
-		Position.Y = 22;
-		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"                                                         ";
+			isFirst = 1;
+		}
 	
-		isFirst = 1;
+
 		
+
+
 	}
+		
+		
+	
 } 
 
 
@@ -686,7 +1687,7 @@ int OperatingPlayers::PurchaseLand(int ID, int pos , COORD Position)
 {//75left 77right 13 enter 
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	
+	command = 3;
 	Position.X = 15;
 	Position.Y = 20;
 	SetConsoleCursorPosition(hOut, Position);
@@ -785,7 +1786,7 @@ int OperatingPlayers::UpdateLand(int ID, int pos, COORD Position, int index)
 {
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
+	command = 3;
 	Position.X = 15;
 	Position.Y = 20;
 	SetConsoleCursorPosition(hOut, Position);

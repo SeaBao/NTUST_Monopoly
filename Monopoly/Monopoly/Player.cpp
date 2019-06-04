@@ -6,6 +6,6 @@ Player::Player()
 	Money = -1;
 	ID = -1;
 	BarrierAmount = 0;
-	BombAmount = 0;
+	DiceAmount = 0;
 	Stop = 0;
 }

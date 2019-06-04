@@ -23,7 +23,7 @@ public:
 
 	//Items
 	int BarrierAmount;
-	int BombAmount;
+	int DiceAmount;
 
 	vector<Property> OwnedProperties;
 };

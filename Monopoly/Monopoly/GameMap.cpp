@@ -81,7 +81,7 @@ void GameMap::ReadMap(string path)
 					player.Money = stoi(splitStrArr[2]);
 					player.Stop = 0;
 					player.BarrierAmount = 1;
-					player.BombAmount = 1;
+					player.DiceAmount = 1;
 
 					if (splitStrArr.size() > 3) {
 						for (size_t i = 3; i < splitStrArr.size(); i += 2) {

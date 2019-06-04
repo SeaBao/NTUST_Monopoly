@@ -131,6 +131,7 @@
     <ClCompile Include="InfoPanel.cpp" />
     <ClCompile Include="Location.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="mainScreen.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="OperatingPlayers.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="InfoPanel.h" />
     <ClInclude Include="Location.h" />
+    <ClInclude Include="mainScreen.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="OperatingPlayers.h" />
     <ClInclude Include="Player.h" />

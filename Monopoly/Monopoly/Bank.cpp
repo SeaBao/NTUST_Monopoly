@@ -5,6 +5,7 @@
 #include "Menu.h"
 #include "Player.h"
 #include "InfoPanel.h"
+#include "Stack.h"
 
 Bank theBank;
 
@@ -36,7 +37,7 @@ void Bank::printMoney()
 	}
 }
 
-int Bank::readAM(int pID)
+void Bank::readAM()
 {
 	wifstream input;
 	input.open("Banks.txt");
@@ -50,26 +51,61 @@ int Bank::readAM(int pID)
 		}
 	}
 	input.close();
-	return stoi(store[pID]);
 }
 
 void Bank::writeAM()
 {
-	wofstream out("Banks.txt");
-	wstringstream s;
-	if (out.is_open())
 	{
-		for (int i = 0; i < 4; i++)
+		wofstream out("Banks.txt");
+		wstringstream s;
+		if (out.is_open())
 		{
-			s << theBank.AccMoney[i];
-			if (i != 3)
+			for (int i = 0; i < 4; i++)
 			{
-				s << " ";
+				s << to_wstring(theBank.AccMoney[i]);
+				if (i != 3)
+				{
+					s << " ";
+				}
 			}
 		}
+		out << s.str();
+		out.close();
 	}
-	out << s.str();
-	out.close();
+	{
+		wofstream out("Debts.txt");
+		wstringstream s;
+		if (out.is_open())
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				s << to_wstring(theBank.AccDebt[i]);
+				if (i != 3)
+				{
+					s << " ";
+				}
+			}
+		}
+		out << s.str();
+		out.close();
+	}
+	{
+		wofstream out("Pays.txt");
+		wstringstream s;
+		if (out.is_open())
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				s << to_wstring(theBank.AccPay[i]);
+				if (i != 3)
+				{
+					s << " ";
+				}
+			}
+		}
+		out << s.str();
+		out.close();
+	}
 }
 
 void Bank::printATM()
@@ -284,4 +320,33 @@ void Bank::payDebt()
 			theBank.AccPay[i]--;
 		}
 	}
+}
+
+void Bank::restore()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		AccMoney[i] = 10000;
+		AccDebt[i] = 0;
+		AccPay[i] = 0;
+	}
+	wstring temp;
+	int n = 0;
+	temp = to_wstring(n);
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 1; j < 6; j++)
+		{
+			stackInfo[i][j] = temp;
+		}
+	}
+	n = 90;
+	temp = to_wstring(n);
+	for (int i = 0; i < 8; i++)
+	{
+		stackInfo[i][0] = temp;
+	}
+	theStack.readStackFile("StacksR.txt");
+	theStack.writeStackFile("Stacks.txt");
+	writeAM();
 }

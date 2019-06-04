@@ -80,6 +80,7 @@ void Stack::readStackFile(string path)
 	if (file.is_open())
 	{
 		int row = 0;
+		int count = 0;
 		wstring line;
 		while (getline(file, line))
 		{
@@ -90,6 +91,10 @@ void Stack::readStackFile(string path)
 			wstring rate = store[1];
 			int temp = stoi(rate);
 
+			for (int i = 0; i < 6; i++)
+			{
+				stackInfo[count][i] = store[i];
+			}
 
 			Stemp.colorChange(temp);
 
@@ -116,15 +121,16 @@ void Stack::readStackFile(string path)
 			pos.X = 137;
 			SetConsoleCursorPosition(hOut, pos);
 			wcout << store[5] << endl;
+			count++;
 		}
 	}
 	file.close();
 }
 
-void Stack::writeStackFile()
+void Stack::writeStackFile(string path)
 {
 	wstringstream s;
-	wofstream outStream("Stacks.txt");
+	wofstream outStream(path);
 	if (outStream.is_open())
 	{
 		for (int i = 0; i < 8; i++)
@@ -185,7 +191,7 @@ void Stack::rateChange(string path)
 			stackInfo[i][1] = upsAndDowns[i];
 		}
 		Stack temp;
-		temp.writeStackFile();
+		temp.writeStackFile("Stacks.txt");
 		temp.printTheScreen();
 		temp.readStackFile("Stacks.txt");
 
@@ -256,9 +262,9 @@ void Stack::buyStacks()
 						SetCursorPosistion(pos.X, pos.Y);
 					}
 				}
-				else if (command == 77)
+				else if (command == 77)//right
 				{
-					if (pos.X == 111) //right
+					if (pos.X == 111) 
 					{
 						pos.X = 119;
 						SetCursorPosistion(pos.X, pos.Y);
@@ -313,7 +319,7 @@ void Stack::buyStacks()
 					theBank.printMoney();
 					stackInfo[count][TheMap.GetCurrentPlayer().ID + 2] = to_wstring(amount + stoi(stackInfo[count][TheMap.GetCurrentPlayer().ID + 2]));
 					Stack temp;
-					temp.writeStackFile();
+					temp.writeStackFile("Stacks.txt");
 					temp.printTheScreen();
 					temp.readStackFile("Stacks.txt");
 					break;
@@ -353,7 +359,7 @@ void Stack::buyStacks()
 					theBank.printMoney();
 					stackInfo[count][TheMap.GetCurrentPlayer().ID + 2] = to_wstring(stoi(stackInfo[count][TheMap.GetCurrentPlayer().ID + 2]) - amount);
 					Stack temp;
-					temp.writeStackFile();
+					temp.writeStackFile("Stacks.txt");
 					temp.printTheScreen();
 					temp.readStackFile("Stacks.txt");
 					break;

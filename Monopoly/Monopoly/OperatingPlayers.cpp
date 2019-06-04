@@ -264,7 +264,7 @@ void OperatingPlayers::GameStart()
 	theStack.readStackFile("Stacks.txt");
 	theBank.printMoney();
 	command = _getch();
-	if (command == 27)//esc
+	while (command == 27)//esc
 	{
 		theMenu.printMenu();
 		command = _getch();
@@ -275,7 +275,7 @@ void OperatingPlayers::GameStart()
 	
 	while (command != EOF)
 	{
-		if (command == 27)//esc
+		while (command == 27)//esc
 		{
 			theMenu.printMenu();
 			command = _getch();
@@ -310,7 +310,7 @@ void OperatingPlayers::GameStart()
 			theStack.rateChange("Stacks.txt");
 			theStack.readStackFile("Stacks.txt");
 			command = _getch();
-			if (command == 27)//esc
+			while (command == 27)//esc
 			{
 				theMenu.printMenu();
 				command = _getch();

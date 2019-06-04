@@ -15,7 +15,7 @@ public:
 	int getPlayerAccount();
 
 	void readStackFile(string path);
-	void writeStackFile();
+	void writeStackFile(string path);
 
 	void rateChange(string path);
 	void colorChange(int rate);

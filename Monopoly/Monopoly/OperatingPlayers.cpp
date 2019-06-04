@@ -593,11 +593,8 @@ void OperatingPlayers::GameStart()
 
 		}
 
-
-
-
-
 		TheMap.TurnNextRound();
+		TheMap.WriteMap("test.txt");
 		theBank.printMoney();
 		PlayerPanel.PrintPanel();
 		Position.X = 99;

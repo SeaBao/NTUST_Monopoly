@@ -5,6 +5,7 @@
 #include "Estate.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 GameMap TheMap;
 
@@ -56,7 +57,7 @@ void GameMap::ReadMap(string path)
 					{
 						array<int, 4> fees{ stoi(splitStrArr[4]), stoi(splitStrArr[5]), stoi(splitStrArr[6]), stoi(splitStrArr[7]) };
 						Estate* estate = new Estate(name, pos, stoi(splitStrArr[3]), fees);
-						LocationList.emplace_back(estate);
+						LocationList.emplace_back(estate); 
 						break;
 					}
 					case -1:
@@ -79,8 +80,8 @@ void GameMap::ReadMap(string path)
 					player.Position = stoi(splitStrArr[1]);
 					player.Money = stoi(splitStrArr[2]);
 					player.Stop = 0;
-
-
+					player.BarrierAmount = 1;
+					player.BombAmount = 1;
 
 					if (splitStrArr.size() > 3) {
 						for (size_t i = 3; i < splitStrArr.size(); i += 2) {
@@ -103,10 +104,35 @@ void GameMap::ReadMap(string path)
 
 void GameMap::WriteMap(string path)
 {
-	ofstream file;
+	wofstream file;
+	file.imbue(locale("zh_TW.UTF-8"));
 	file.open(path);
-
+	
 	if (file.is_open()) {
+		wstringstream ss;
+		ss << TheMap.Name << " " << TheMap.RemainingRounds << " " << TheMap.MaxPlayers << endl;
+
+		for (int i = 0; i < TheMap.LocationList.size(); i++) {
+			ss << (TheMap[i].Position < 10 ? L'0' + to_wstring(TheMap[i].Position) : to_wstring(TheMap[i].Position)) << " " << TheMap[i].Name;
+			ss << " " << (int)TheMap[i].Type;
+
+			if (TheMap[i].Type == LocType::Estate) {
+				Estate* temp = static_cast<Estate*>(&TheMap[i]);
+				for (int item : temp->Fees) {
+					ss << " " << item;
+				}
+			}
+
+			ss << endl;
+		}
+
+		ss << "playerstate " << TheMap._CurrentPlayerID << endl;
+
+		for (Player p : TheMap.PlayerList) {
+			ss << p.ID << " " << (p.Position < 10 ? L'0' + to_wstring(p.Position) : to_wstring(p.Position)) << " " << p.Money << endl;
+		}
+
+		file << ss.rdbuf();
 		file.close();
 	}
 }
@@ -395,21 +421,29 @@ void GameMap::TurnNextRound()
 		}
 		_PlayerTurns--;
 
-		if (_PlayerTurns == 0) {
-			RemainingRounds--;
-
+		if (!isFound) {
 			for (int i = 0; i < PlayerList.size(); i++) {
 				if (PlayerList[i].Stop > 0) {
 					PlayerList[i].Stop -= 1;
 				}
 			}
-
-			int temp = 0;
-			for (auto p : PlayerList) {
-				if (p.Stop == 0) temp++;
-			}
-			_PlayerTurns = temp;
 		}
+	}
+
+	if (_PlayerTurns == 0) {
+		RemainingRounds--;
+
+		for (int i = 0; i < PlayerList.size(); i++) {
+			if (PlayerList[i].Stop > 0) {
+				PlayerList[i].Stop -= 1;
+			}
+		}
+
+		int temp = 0;
+		for (auto p : PlayerList) {
+			if (p.Stop == 0) temp++;
+		}
+		_PlayerTurns = temp;
 	}
 	
 }

@@ -57,6 +57,11 @@ void GameMap::ReadMap(string path)
 					{
 						array<int, 4> fees{ stoi(splitStrArr[4]), stoi(splitStrArr[5]), stoi(splitStrArr[6]), stoi(splitStrArr[7]) };
 						Estate* estate = new Estate(name, pos, stoi(splitStrArr[3]), fees);
+
+						if (splitStrArr[splitStrArr.size() - 1] == L"B") {
+							estate->HasBarrier = 1;
+						}
+
 						LocationList.emplace_back(estate); 
 						break;
 					}
@@ -85,14 +90,24 @@ void GameMap::ReadMap(string path)
 
 					if (splitStrArr.size() > 3) {
 						for (size_t i = 3; i < splitStrArr.size(); i += 2) {
-							Property property;
-							property.Estate = GetEstateByID(stoi(splitStrArr[i]));
-							property.Level = stoi(splitStrArr[i + 1]);
-
-							player.OwnedProperties.push_back(property);
+							if (splitStrArr[i] == L"S") {
+								player.Stop = stoi(splitStrArr[i + 1]);
+							}
+							else if (splitStrArr[i] == L"B") {
+								player.BarrierAmount = stoi(splitStrArr[i + 1]);
+							}
+							else if (splitStrArr[i] == L"D") {
+								player.DiceAmount = stoi(splitStrArr[i + 1]);
+							}
+							else {
+								Property property;
+								property.Estate = GetEstateByID(stoi(splitStrArr[i]));
+								property.Level = stoi(splitStrArr[i + 1]);
+								player.OwnedProperties.push_back(property);
+							}
+							
 						}
 					}
-
 					PlayerList.push_back(player);
 				}
 			}
@@ -121,6 +136,8 @@ void GameMap::WriteMap(string path)
 				for (int item : temp->Fees) {
 					ss << " " << item;
 				}
+
+				if (temp->HasBarrier == 1) ss << " B";
 			}
 
 			ss << endl;
@@ -129,7 +146,23 @@ void GameMap::WriteMap(string path)
 		ss << "playerstate " << TheMap._CurrentPlayerID << endl;
 
 		for (Player p : TheMap.PlayerList) {
-			ss << p.ID << " " << (p.Position < 10 ? L'0' + to_wstring(p.Position) : to_wstring(p.Position)) << " " << p.Money << endl;
+			ss << p.ID << " " << (p.Position < 10 ? L'0' + to_wstring(p.Position) : to_wstring(p.Position)) << " " << p.Money;
+
+			for (auto theProperty : p.OwnedProperties) {
+				ss << " " << theProperty.Estate.Position << " " << theProperty.Level;
+			}
+
+			ss << " S " << p.Stop;
+
+			if (p.BarrierAmount > 0) {
+				ss << " B " << p.BarrierAmount;
+			}
+
+			if (p.DiceAmount > 0) {
+				ss << " D " << p.DiceAmount;
+			}
+
+			ss << endl;
 		}
 
 		file << ss.rdbuf();
@@ -228,7 +261,6 @@ void GameMap::PrintMap()
 
 	sort(LocationList.begin(), LocationList.end(), [](const unique_ptr<Location> & a, const unique_ptr<Location> & b) { return a->Position < b->Position; });
 	
-	
 	RefreshEstateLabel();
 	RefreshPlayerLocation();
 	ShowConsoleCursor(true);
@@ -236,6 +268,7 @@ void GameMap::PrintMap()
 }
 
 void GameMap::RefreshPlayerLocation() {
+	TheMap.WriteMap("debug.txt");
 	const int clrSelection[4] = { FOREGROUND_BLUE, FOREGROUND_GREEN, FOREGROUND_RED, FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY };
 	for (int i = 0; i < LocationList.size(); i++) {
 		auto loc = LocationList[i].get();

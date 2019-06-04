@@ -41,8 +41,6 @@ int main() {
 	theBank.printMoney();
 	theStack.printTheScreen();
 	theStack.readStackFile("Stacks.txt");
-	
-
 
 	SetCursorPosistion(98, 1);
 

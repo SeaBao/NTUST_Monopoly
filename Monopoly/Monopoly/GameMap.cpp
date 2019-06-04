@@ -255,6 +255,19 @@ void GameMap::RefreshEstateLabel()
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (isPropertyOwned ? clrSelection[playerID] : 0) | whiteText);
 		SetCursorPosistion(coord.X + 5 - LocationList[i].get()->Name.length(), coord.Y);
 		wcout << LocationList[i].get()->Name;
+
+		if (TheMap[i].Type == LocType::Estate) {
+			Estate* myEstate = static_cast<Estate*>(&TheMap[i]);
+			SetCursorPosistion(coord.X + 2, coord.Y + 2);
+			if (myEstate->HasBarrier == 1) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+				wcout << L"<路障>";
+			}
+			else {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), whiteText);				
+				wcout << L"      ";
+			}
+		}
 	}
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), whiteText);
@@ -362,41 +375,43 @@ void GameMap::TurnNextRound()
 	if (index == -1) throw exception("Wrong Player ID");
 
 	bool isFound = false;
-	for (int i = index + 1; i < PlayerList.size(); i++) {
-		if (PlayerList[i].Stop == 0) {
-			_CurrentPlayerID = PlayerList[i].ID;
-			isFound = true;
-			break;
-		}
-	}
-
-	if (!isFound) {
-		for (int i = 0; i < index; i++) {
+	while (!isFound) {
+		for (int i = index + 1; i < PlayerList.size(); i++) {
 			if (PlayerList[i].Stop == 0) {
 				_CurrentPlayerID = PlayerList[i].ID;
 				isFound = true;
 				break;
 			}
 		}
-	}
 
-	for (int i = 0; i < PlayerList.size(); i++) {
-		if (PlayerList[i].Stop > 0) {
-			PlayerList[i].Stop -= 1;
+		if (!isFound) {
+			for (int i = 0; i < index; i++) {
+				if (PlayerList[i].Stop == 0) {
+					_CurrentPlayerID = PlayerList[i].ID;
+					isFound = true;
+					break;
+				}
+			}
+		}
+		_PlayerTurns--;
+
+		if (_PlayerTurns == 0) {
+			RemainingRounds--;
+
+			for (int i = 0; i < PlayerList.size(); i++) {
+				if (PlayerList[i].Stop > 0) {
+					PlayerList[i].Stop -= 1;
+				}
+			}
+
+			int temp = 0;
+			for (auto p : PlayerList) {
+				if (p.Stop == 0) temp++;
+			}
+			_PlayerTurns = temp;
 		}
 	}
-
-	_PlayerTurns--;
-
-	if (_PlayerTurns == 0) {
-		RemainingRounds--;
-
-		int temp = 0;
-		for (auto p : PlayerList) {
-			if (p.Stop == 0) temp++;
-		}
-		_PlayerTurns = temp;
-	}
+	
 }
 
 Player& GameMap::GetCurrentPlayer()

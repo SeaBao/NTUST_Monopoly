@@ -226,7 +226,7 @@ void GameEnd()
 	HANDLE hOut;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD Position;
-	Position.X = 99;
+	Position.X = 15;
 	Position.Y = 16;
 	SetConsoleCursorPosition(hOut, Position);
 	wcout << L"勝利者為 ";
@@ -285,12 +285,13 @@ void OperatingPlayers::GameStart()
 		Position.X = 99;
 		Position.Y = 9;
 		SetConsoleCursorPosition(hOut, Position);
-		wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
-		theBank.printMoney();
 		if (TheMap.GetRemainingRounds() == 0)
-		{
+		{	
 			GameEnd();
 		}
+		
+		theBank.printMoney();
+	
 		
 		if (isFirst != 0)
 		{
@@ -300,6 +301,18 @@ void OperatingPlayers::GameStart()
 			SetConsoleCursorPosition(hOut, Position);
 			wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
 			theBank.printMoney();
+			int noMoneyPeopleCount = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				if (TheMap.PlayerList[i].Stop == -1)
+				{
+					noMoneyPeopleCount++;
+				 }
+			}
+			if (noMoneyPeopleCount==3)
+			{
+				GameEnd();
+			}
 			Position.X = 15;
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
@@ -315,7 +328,25 @@ void OperatingPlayers::GameStart()
 				theMenu.printMenu();
 				command = _getch();
 			}
-			if (command == 'B' || command == 'b')
+			if (command == 'N' || command == 'n')
+			{
+				if (RoadBarrier() == 1)
+				{
+					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
+					TheMap.RefreshEstateLabel();
+					command = _getch();
+				}
+				else
+				{
+					Position.X = 15;
+					Position.Y = 26;
+					SetConsoleCursorPosition(hOut, Position);
+					wcout << L"案任意鍵繼續擲骰子";
+					command = _getch();
+				}
+
+			}
+			 if (command == 'B' || command == 'b')
 			{
 
 				if (CheatedDice())
@@ -327,6 +358,9 @@ void OperatingPlayers::GameStart()
 					cin >> CheatedDicePoint;
 					while (CheatedDicePoint > 6 || CheatedDicePoint < 0)
 					{
+						Position.X = 15;
+						Position.Y = 26;
+						SetConsoleCursorPosition(hOut, Position);
 						wcout << L"請重新輸入";
 						cin >> CheatedDicePoint;
 					}
@@ -346,23 +380,9 @@ void OperatingPlayers::GameStart()
 				}
 				
 			}
-			else if (command == 'N' || command == 'n')
-			{
-				if (RoadBarrier() == 1)
-				{
-					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
-				}
-				else
-				{
-					Position.X = 15;
-					Position.Y = 26;
-					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"案任意鍵繼續擲骰子";
-					command = _getch();
-				}
-				
-			}
+			
 		}
+		
 		Position.X = 15;
 		Position.Y = 26;
 		SetConsoleCursorPosition(hOut, Position);
@@ -373,6 +393,7 @@ void OperatingPlayers::GameStart()
 		Position.Y = 12;
 		SetConsoleCursorPosition(hOut, Position);
 
+		
 		int DicePoint = (rand() % 6) + 1;
 		if (CheatedDicePoint != 0)
 		{
@@ -384,6 +405,7 @@ void OperatingPlayers::GameStart()
 	
 
 		TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position + DicePoint;
+
 		if (TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position >= 28)
 		{
 			TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position = TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position % 28;
@@ -392,8 +414,11 @@ void OperatingPlayers::GameStart()
 
 		if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
 		{
-			TheMap.GetCurrentPlayer().Stop = 1;
+			TheMap.GetCurrentPlayer().Stop += 2;
+
+
 			TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
+			TheMap.RefreshEstateLabel();
 		}
 		TheMap.RefreshPlayerLocation();
 	
@@ -409,7 +434,8 @@ void OperatingPlayers::GameStart()
 				Position.Y = 20;
 				SetConsoleCursorPosition(hOut, Position);
 				wcout << L"遇到韓國魚游行，停止行動2回合";
-				TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 2;
+				TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
+			
 				break;
 			case 2:
 				Position.X = 15;
@@ -449,7 +475,10 @@ void OperatingPlayers::GameStart()
 				Position.Y = 20;
 				SetConsoleCursorPosition(hOut, Position);
 				wcout << L"不小心出了車禍...";
+				TheMap.GetCurrentPlayer().Money = 0;
 				TheMap.GetCurrentPlayer().Stop = -1;
+				TheMap.GetCurrentPlayer().OwnedProperties.clear();
+				TheMap.RefreshEstateLabel();
 				break;
 			case 2:
 				Position.X = 15;
@@ -483,8 +512,14 @@ void OperatingPlayers::GameStart()
 				Position.X = 15;
 				Position.Y = 20;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"經過起點，獲得2000元";
+				wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+				command = _getch();
 				TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
+				
+
+			}
+			if (TheMap.GetCurrentPlayer().Position == 0)
+			{
 
 			}
 			else
@@ -549,15 +584,31 @@ void OperatingPlayers::GameStart()
 						Position.Y = 22;
 						SetConsoleCursorPosition(hOut, Position);
 						wcout << L" 需要繳納 " << static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] << L" 元";
-						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
-						TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+						if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level] < 0)
+						{
+							TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
+							TheMap.GetCurrentPlayer().Money = 0;
+							TheMap.GetCurrentPlayer().Stop = -1;
+							TheMap.GetCurrentPlayer().OwnedProperties.clear();
+							TheMap.RefreshEstateLabel();
+						}
+						else
+						{
+							TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+							TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->Fees[TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).OwnedProperties[pos].Level];
+						}
+
 					}
 				}
 				else
 				{
 
 					//購買
-					if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position))
+					if (TheMap.GetCurrentPlayer().Money - static_cast<Estate*>(&TheMap[TheMap.GetCurrentPlayer().Position])->InitialPrice < 0)
+					{
+
+					}
+					else if (PurchaseLand(TheMap.GetCurrentPlayer().ID, TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position, Position))
 					{
 						hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -588,7 +639,9 @@ void OperatingPlayers::GameStart()
 						SetConsoleCursorPosition(hOut, Position);
 					}
 				}
+
 			}
+				
 
 		}
 

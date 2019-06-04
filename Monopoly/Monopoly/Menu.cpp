@@ -175,3 +175,79 @@ void Menu::printWord(int y)
 		SetCursorPosistion(98, 29);
 	}
 }
+
+void Menu::winningScreen(int who)
+{
+	SetConsoleTextAttribute(hOut, 0 | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+	SetCursorPosistion(50, 13);
+	SetCursorPosistion(50, 14);
+	for (int i = 0; i < 3; i++)
+	{
+		wcout << L"         ";
+	}
+	SetCursorPosistion(50, 15);
+	for (int i = 0; i < 3; i++)
+	{
+		wcout << L"         ";
+	}
+	SetCursorPosistion(50, 16);
+	for (int i = 0; i < 3; i++)
+	{
+		wcout << L"         ";
+	}
+	SetCursorPosistion(50, 17);
+	for (int i = 0; i < 3; i++)
+	{
+		wcout << L"         ";
+	}
+	SetCursorPosistion(50, 18);
+	for (int i = 0; i < 3; i++)
+	{
+		wcout << L"         ";
+	}
+	SetCursorPosistion(57, 15);
+	if (who == 1)
+	{
+		wcout << L"恭喜玩家1獲勝!!";
+	}
+	else if (who == 2)
+	{
+		wcout << L"恭喜玩家2獲勝!!";
+	}
+	else if (who == 3)
+	{
+		wcout << L"恭喜玩家3獲勝!!";
+	}
+	else if (who == 4)
+	{
+		wcout << L"恭喜玩家4獲勝!!";
+	}
+	SetCursorPosistion(54, 17);
+	wcout << L"是否重新開始?  是 否";
+	pos.Y = 17;
+	pos.X = 69;
+	SetConsoleCursorPosition(hOut, pos);
+	char command;
+	command = _getch();
+	while (command != EOF)
+	{
+		if (command == 77)
+		{
+			if (pos.X == 69)
+			{
+				pos.X += 3;
+				SetConsoleCursorPosition(hOut, pos);
+			}
+		}
+		else if (command == 75)
+		{
+			if (pos.X == 72)
+			{
+				pos.X -= 3;
+				SetConsoleCursorPosition(hOut, pos);
+			}
+		}
+		command = _getch();
+	}
+	
+}

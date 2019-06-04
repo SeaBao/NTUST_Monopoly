@@ -480,7 +480,7 @@ void mainScreen::pressRead()
 			{
 				selectPeople();
 			}
-			else if (pos.Y == 27)
+			else if (pos.Y == 27) //¿é¤JÀÉ¦W
 			{
 				pos.Y = 29;
 				pos.X = 126;

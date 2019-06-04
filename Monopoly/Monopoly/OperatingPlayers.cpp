@@ -265,7 +265,7 @@ void OperatingPlayers::GameStart()
 	theBank.printMoney();
 	command = _getch();
 	
-	if (command == 27)//esc
+	while (command == 27)//esc
 	{
 		theMenu.printMenu();
 		command = _getch();
@@ -280,11 +280,6 @@ void OperatingPlayers::GameStart()
 		Position.Y = 26;
 		SetConsoleCursorPosition(hOut, Position);
 		wcout << L"                                                        ";
-		if (command == 27)//esc
-		{
-			theMenu.printMenu();
-			command = _getch();
-		}
 		int CheatedDicePoint = 0;
 		
 		Position.X = 99;
@@ -323,12 +318,12 @@ void OperatingPlayers::GameStart()
 			SetConsoleCursorPosition(hOut, Position);
 			theBank.payDebt();
 			wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
-		
+			
 
 			theStack.rateChange("Stacks.txt");
 			theStack.readStackFile("Stacks.txt");
 			command = _getch();
-			if (command == 27)//esc
+			while (command == 27)//esc
 			{
 				theMenu.printMenu();
 				command = _getch();

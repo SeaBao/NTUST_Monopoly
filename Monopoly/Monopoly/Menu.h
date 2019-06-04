@@ -8,6 +8,7 @@ class Menu
 public:
 	void printMenu();
 	void printWord(int y);
+	void winningScreen(int who);
 private:
 	COORD pos;
 	HANDLE hOut;

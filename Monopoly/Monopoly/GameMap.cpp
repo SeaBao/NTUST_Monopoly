@@ -133,6 +133,7 @@ void GameMap::WriteMap(string path)
 
 			if (TheMap[i].Type == LocType::Estate) {
 				Estate* temp = static_cast<Estate*>(&TheMap[i]);
+				ss << " " << temp->InitialPrice;
 				for (int item : temp->Fees) {
 					ss << " " << item;
 				}
@@ -460,6 +461,7 @@ void GameMap::TurnNextRound()
 					PlayerList[i].Stop -= 1;
 				}
 			}
+			_PlayerTurns--;
 		}
 	}
 

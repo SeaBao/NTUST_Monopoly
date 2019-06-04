@@ -333,7 +333,7 @@ void OperatingPlayers::GameStart()
 				theMenu.printMenu();
 				command = _getch();
 			}
-			if (command == 'N' || command == 'n')
+			if ((command == 'N' || command == 'n')&& TheMap.GetCurrentPlayer().BarrierAmount>0)
 			{
 				Position.X = 15;
 				Position.Y = 26;
@@ -343,6 +343,7 @@ void OperatingPlayers::GameStart()
 				{
 					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
 					TheMap.RefreshEstateLabel();
+					TheMap.GetCurrentPlayer().BarrierAmount--;
 					command = _getch();
 				}
 				else
@@ -356,7 +357,25 @@ void OperatingPlayers::GameStart()
 
 
 			}
-			else if (command == 'B' || command == 'b')
+			else if ((command == 'N' || command == 'n') && TheMap.GetCurrentPlayer().BarrierAmount == 0)
+			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"道具已使用完畢";
+				command = _getch();
+
+			}
+			else if ((command == 'B' || command == 'b') && TheMap.GetCurrentPlayer().DiceAmount == 0)
+			{
+				Position.X = 15;
+				Position.Y = 26;
+				SetConsoleCursorPosition(hOut, Position);
+				wcout << L"道具已使用完畢";
+				command = _getch();
+
+			}
+			else if ((command == 'B' || command == 'b' )&& TheMap.GetCurrentPlayer().DiceAmount > 0)
 			{
 				Position.X = 15;
 				Position.Y = 26;
@@ -381,6 +400,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 20;
 					SetConsoleCursorPosition(hOut, Position);
+					TheMap.GetCurrentPlayer().DiceAmount--;
 					command = 3;
 				}
 				else
@@ -980,7 +1000,7 @@ void OperatingPlayers::GameStart()
 		}
 		else
 		{
-		if (command == 'N' || command == 'n')
+		if ((command == 'N' || command == 'n') && TheMap.GetCurrentPlayer().BarrierAmount > 0)
 		{
 			Position.X = 15;
 			Position.Y = 26;
@@ -990,6 +1010,7 @@ void OperatingPlayers::GameStart()
 			{
 				TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 1;
 				TheMap.RefreshEstateLabel();
+				TheMap.GetCurrentPlayer().BarrierAmount--;
 				command = _getch();
 			}
 			else
@@ -1003,7 +1024,25 @@ void OperatingPlayers::GameStart()
 
 
 		}
-		else if (command == 'B' || command == 'b')
+		else if ((command == 'N' || command == 'n') && TheMap.GetCurrentPlayer().BarrierAmount == 0)
+		{
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"道具已使用完畢";
+			command = _getch();
+			
+		}
+		else if ((command == 'B' || command == 'b') && TheMap.GetCurrentPlayer().DiceAmount == 0)
+		{
+			Position.X = 15;
+			Position.Y = 26;
+			SetConsoleCursorPosition(hOut, Position);
+			wcout << L"道具已使用完畢";
+			command = _getch();
+
+		}
+		else if ((command == 'B' || command == 'b') && TheMap.GetCurrentPlayer().DiceAmount > 0)
 		{
 			Position.X = 15;
 			Position.Y = 26;
@@ -1029,6 +1068,7 @@ void OperatingPlayers::GameStart()
 				Position.Y = 20;
 				SetConsoleCursorPosition(hOut, Position);
 				command = 3;
+				TheMap.GetCurrentPlayer().DiceAmount--;
 			}
 			else
 			{

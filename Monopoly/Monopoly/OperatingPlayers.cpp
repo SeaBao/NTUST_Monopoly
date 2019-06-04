@@ -275,11 +275,6 @@ void OperatingPlayers::GameStart()
 	
 	while (command != EOF)
 	{
-		while (command == 27)//esc
-		{
-			theMenu.printMenu();
-			command = _getch();
-		}
 		int CheatedDicePoint = 0;
 		
 		Position.X = 99;

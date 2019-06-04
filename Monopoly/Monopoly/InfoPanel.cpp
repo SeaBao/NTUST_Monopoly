@@ -44,6 +44,8 @@ void InfoPanel::PrintPanel()
 	for (auto p : TheMap.PlayerList) {
 		SetCursorPosistion(100 + p.ID * 9, 2);
 		wcout << "$" << p.Money;
+		SetCursorPosistion(100 + p.ID * 9, 4);
+		wcout << L"»ë:" << p.DiceAmount << L"»Ù:" << p.BarrierAmount;
 	}
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), whiteText);

@@ -258,8 +258,8 @@ void OperatingPlayers::GameStart()
 	Position.X = 15;
 	Position.Y = 10;
 	SetConsoleCursorPosition(hOut, Position);
-	theBank.payDebt();
 	wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+	theBank.payDebt();
 	theStack.rateChange("Stacks.txt");
 	theStack.readStackFile("Stacks.txt");
 	theBank.printMoney();
@@ -316,8 +316,9 @@ void OperatingPlayers::GameStart()
 			Position.X = 15;
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
-			theBank.payDebt();
+
 			wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+			theBank.payDebt();
 			
 
 			theStack.rateChange("Stacks.txt");
@@ -403,7 +404,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 26;
 					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"案任意鍵繼續擲骰子";
+					wcout << L"按任意鍵繼續擲骰子";
 					command = _getch();
 					
 				}
@@ -541,7 +542,7 @@ void OperatingPlayers::GameStart()
 						Position.X = 15;
 						Position.Y = 20;
 						SetConsoleCursorPosition(hOut, Position);
-						wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+						wcout << L"經過起點，獲得2000元  按任意鍵繼續";
 						command = _getch();
 						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 
@@ -840,7 +841,7 @@ void OperatingPlayers::GameStart()
 						Position.X = 15;
 						Position.Y = 20;
 						SetConsoleCursorPosition(hOut, Position);
-						wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+						wcout << L"經過起點，獲得2000元  按任意鍵繼續";
 						command = _getch();
 						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 
@@ -1027,7 +1028,7 @@ void OperatingPlayers::GameStart()
 				Position.X = 15;
 				Position.Y = 26;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"案任意鍵繼續擲骰子";
+				wcout << L"按任意鍵繼續擲骰子";
 				command = _getch();
 			}
 
@@ -1084,7 +1085,7 @@ void OperatingPlayers::GameStart()
 				Position.X = 15;
 				Position.Y = 26;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"案任意鍵繼續擲骰子";
+				wcout << L"按任意鍵繼續擲骰子";
 				command = _getch();
 
 			}
@@ -1225,7 +1226,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 20;
 					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+					wcout << L"經過起點，獲得2000元  按任意鍵繼續";
 					command = _getch();
 					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 
@@ -1519,7 +1520,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 20;
 					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+					wcout << L"經過起點，獲得2000元  按任意鍵繼續";
 					command = _getch();
 					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 

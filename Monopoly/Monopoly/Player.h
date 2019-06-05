@@ -20,7 +20,7 @@ public:
 	int Money;
 	int Position;
 	int Stop;
-
+	int StopTurn;
 	//Items
 	int BarrierAmount;
 	int DiceAmount;

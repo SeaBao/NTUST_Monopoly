@@ -41,11 +41,11 @@ void InfoPanel::PrintPanel()
 		}
 	}
 
-	for (auto p : TheMap.PlayerList) {
-		SetCursorPosistion(100 + p.ID * 9, 2);
-		wcout << "$" << p.Money;
-		SetCursorPosistion(100 + p.ID * 9, 4);
-		wcout << L"»ë:" << p.DiceAmount << L"»Ù:" << p.BarrierAmount;
+	for (int i=0; i < TheMap.GetMaxPlayers(); i++) {
+		SetCursorPosistion(100 + TheMap.PlayerList[i].ID * 9, 2);
+		wcout << "$" << TheMap.PlayerList[i].Money;
+		SetCursorPosistion(100 + TheMap.PlayerList[i].ID * 9, 4);
+		wcout << L"»ë:" << TheMap.PlayerList[i].DiceAmount << L"»Ù:" << TheMap.PlayerList[i].BarrierAmount;
 	}
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), whiteText);

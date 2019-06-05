@@ -1,5 +1,10 @@
 #include "mainScreen.h"
+#include "GameMap.h"
+#include "InfoPanel.h"
 #include "Utility.h"
+#include "Stack.h"
+#include "Bank.h"
+#include "OperatingPlayers.h"
 
 mainScreen theScreen;
 
@@ -423,22 +428,25 @@ void mainScreen::printMainScreen()
 
 void mainScreen::pressStart()
 {
+	int maxPlayer = selectPeople();
 
-	/*pos.Y = 25;
-	pos.X = 126;
-	SetConsoleCursorPosition(hOut, pos);
-	SetConsoleTextAttribute(hOut, 0 | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED );
-	wcout << L"請輸入人數:";
-	pos.Y = 26;
-	pos.X = 126;
-	SetConsoleCursorPosition(hOut, pos);
-	wcout << L"(1~4)";
-	pos.Y = 25;
-	pos.X = 137;
-	SetConsoleCursorPosition(hOut, pos);
-	int players;
-	cin >> players;*/
-	selectPeople();
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+
+	system("cls");
+	TheMap.ReadMap("Taiwan.txt", maxPlayer);
+	TheMap.PrintMap();
+	PlayerPanel.PrintPanel();
+	for (int i = 0; i < 4; i++)
+	{
+		theBank.AccMoney[i] = 10000;
+		theBank.AccDebt[i] = 0;
+		theBank.AccPay[i] = 0;
+	}
+	theBank.printMoney();
+	theStack.printTheScreen();
+	theStack.readStackFile("Stacks.txt");
+	OperatingPlayers start;
+	start.GameStart();
 }
 
 void mainScreen::pressRead()
@@ -478,7 +486,24 @@ void mainScreen::pressRead()
 		{
 			if (pos.Y == 25) //Taiwan
 			{
-				selectPeople();
+				int maxPlayer = selectPeople();
+
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+				system("cls");
+				TheMap.ReadMap("Taiwan.txt", maxPlayer);
+				TheMap.PrintMap();
+				PlayerPanel.PrintPanel();
+				for (int i = 0; i < 4; i++)
+				{
+					theBank.AccMoney[i] = 10000;
+					theBank.AccDebt[i] = 0;
+					theBank.AccPay[i] = 0;
+				}
+				theBank.printMoney();
+				theStack.printTheScreen();
+				theStack.readStackFile("Stacks.txt");
+				OperatingPlayers start;
+				start.GameStart();
 			}
 			else if (pos.Y == 27) //輸入檔名
 			{
@@ -492,7 +517,32 @@ void mainScreen::pressRead()
 				SetConsoleCursorPosition(hOut, pos);
 				string fileName;
 				cin >> fileName;
-				selectPeople();
+
+				try
+				{
+					TheMap.ReadMap(fileName);
+				}
+				catch (const std::exception&)
+				{
+					wcout << "檔案不存在！";
+					return;
+				}
+
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+				system("cls");
+				TheMap.PrintMap();
+				PlayerPanel.PrintPanel();
+				for (int i = 0; i < 4; i++)
+				{
+					theBank.AccMoney[i] = 10000;
+					theBank.AccDebt[i] = 0;
+					theBank.AccPay[i] = 0;
+				}
+				theBank.printMoney();
+				theStack.printTheScreen();
+				theStack.readStackFile("Stacks.txt");
+				OperatingPlayers start;
+				start.GameStart();
 			}
 		}
 		command = _getch();
@@ -602,10 +652,13 @@ void mainScreen::printWord(int y)
 		SetConsoleTextAttribute(hOut, 0 | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 		wcout << L"離 開 遊 戲";
 	}
+
+	SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }
 
-void mainScreen::selectPeople()
+int mainScreen::selectPeople()
 {
+	ShowConsoleCursor(true);
 	pos.Y = 29;
 	pos.X = 126;
 	SetConsoleCursorPosition(hOut, pos);
@@ -644,22 +697,22 @@ void mainScreen::selectPeople()
 		{
 			if (pos.X == 127) //1人
 			{
-
+				return 1;
 			}
 			else if (pos.X == 129) //2人
 			{
-
+				return 2;
 			}
 			else if (pos.X == 131) //3人
 			{
-
+				return 3;
 			}
 			else if (pos.X == 133) //4人
 			{
-
+				return 4;
 			}
 		}
 		command = _getch();
 	}
-
+	SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }

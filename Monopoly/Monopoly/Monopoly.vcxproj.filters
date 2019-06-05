@@ -71,6 +71,9 @@
     <Text Include="test.txt">
       <Filter>資源檔</Filter>
     </Text>
+    <Text Include="Taiwan.txt">
+      <Filter>資源檔</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">

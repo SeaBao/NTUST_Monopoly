@@ -30,24 +30,25 @@ int main() {
 	cfi.FontWeight = FW_NORMAL;
 	SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
 
+	theScreen.printMainScreen();
 
-	TheMap.ReadMap("Basemap.txt");
-	TheMap.PrintMap();
-	PlayerPanel.PrintPanel();
-	for (int i = 0; i < 4; i++)
-	{
-		theBank.AccMoney[i] = 10000;
-		theBank.AccDebt[i] = 0;
-		theBank.AccPay[i] = 0;
-	}
-	theBank.printMoney();
-	theStack.printTheScreen();
-	theStack.readStackFile("Stacks.txt");
+	//TheMap.ReadMap("Taiwan.txt");
+	//TheMap.PrintMap();
+	//PlayerPanel.PrintPanel();
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	theBank.AccMoney[i] = 10000;
+	//	theBank.AccDebt[i] = 0;
+	//	theBank.AccPay[i] = 0;
+	//}
+	//theBank.printMoney();
+	//theStack.printTheScreen();
+	//theStack.readStackFile("Stacks.txt");
 
-	SetCursorPosistion(98, 1);
+	//SetCursorPosistion(98, 1);
 
-	OperatingPlayers start;
-	start.GameStart();
+	//OperatingPlayers start;
+	//start.GameStart();
 	
 	return 0;
 }

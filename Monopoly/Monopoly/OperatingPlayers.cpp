@@ -215,7 +215,7 @@ void GameEnd()
 {
 	int maxPlayer = 0;
 	int maxMoney = 0;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < TheMap.PlayerList.size(); i++)
 	{
 		if (maxMoney < TheMap.PlayerList[i].Money)
 		{
@@ -302,7 +302,7 @@ void OperatingPlayers::GameStart()
 			wcout << L"目前回合數為 " << 21 - TheMap.GetRemainingRounds();
 			theBank.printMoney();
 			int noMoneyPeopleCount = 0;
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < TheMap.PlayerList.size(); i++)
 			{
 				if (TheMap.PlayerList[i].Stop == -1)
 				{
@@ -346,7 +346,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 26;
 					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"案任意鍵繼續擲骰子";
+					wcout << L"按任意鍵繼續擲骰子";
 					command = _getch();
 				}
 

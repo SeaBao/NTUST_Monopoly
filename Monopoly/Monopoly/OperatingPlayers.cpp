@@ -215,7 +215,7 @@ void GameEnd()
 {
 	int maxPlayer = 0;
 	int maxMoney = 0;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < TheMap.PlayerList.size(); i++)
 	{
 		if (maxMoney < TheMap.PlayerList[i].Money)
 		{

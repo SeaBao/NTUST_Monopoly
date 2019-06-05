@@ -451,7 +451,7 @@ void GameMap::TurnNextRound()
 		}
 
 		if (!isFound) {
-			for (int i = 0; i < index; i++) {
+			for (int i = 0; i <= index; i++) {
 				if (PlayerList[i].Stop == 0) {
 					_CurrentPlayerID = PlayerList[i].ID;
 					isFound = true;

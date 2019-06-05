@@ -31,7 +31,7 @@ int main() {
 	SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
 
 
-	TheMap.ReadMap("Basemap.txt");
+	TheMap.ReadMap("Taiwan.txt");
 	TheMap.PrintMap();
 	PlayerPanel.PrintPanel();
 	for (int i = 0; i < 4; i++)

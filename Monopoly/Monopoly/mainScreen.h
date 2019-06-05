@@ -9,7 +9,7 @@ class mainScreen
 public:
 	void printMainScreen();
 	void printWord(int y);
-	void selectPeople();
+	int selectPeople();
 
 	void pressStart();
 	void pressRead();

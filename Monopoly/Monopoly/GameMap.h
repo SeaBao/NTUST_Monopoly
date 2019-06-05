@@ -12,7 +12,7 @@ class GameMap
 public:
 	GameMap();
 
-	void ReadMap(string path);
+	void ReadMap(string path, int maxPlayer = -1);
 	void WriteMap(string path);
 	void PrintMap();
 	void RefreshPlayerLocation();

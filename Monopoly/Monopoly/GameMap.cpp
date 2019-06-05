@@ -17,7 +17,7 @@ GameMap::GameMap()
 	_CurrentPlayerID = -1;
 }
 
-void GameMap::ReadMap(string path)
+void GameMap::ReadMap(string path, int maxPlayer)
 {
 	wifstream file;
 	file.imbue(locale("zh_TW.UTF-8"));
@@ -35,7 +35,7 @@ void GameMap::ReadMap(string path)
 			if (rows == 1) {
 				Name = splitStrArr[0];
 				RemainingRounds = stoi(splitStrArr[1]);
-				MaxPlayers = stoi(splitStrArr[2]);
+				MaxPlayers = maxPlayer != -1 ? maxPlayer : stoi(splitStrArr[2]);
 			}
 			else if (rows != 1 && splitStrArr[0] == L"playerstate") {
 				isFinishLoadingLocation = true;
@@ -80,6 +80,10 @@ void GameMap::ReadMap(string path)
 					}
 				}
 				else {
+					if (PlayerList.size() >= MaxPlayers) {
+						break;
+					}
+
 					Player player;
 					player.ID = stoi(splitStrArr[0]);
 					player.Position = stoi(splitStrArr[1]);
@@ -180,6 +184,7 @@ void GameMap::PrintMap()
 {
 	auto cuurentPos = GetCursorPosition();
 	ShowConsoleCursor(false);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
 	int maxWidth = 88 + 8, maxHeight = 34;
 

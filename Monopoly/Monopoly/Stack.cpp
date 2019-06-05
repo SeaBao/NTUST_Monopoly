@@ -178,6 +178,11 @@ void Stack::rateChange(string path)
 			int rate = up - down;
 			int temp = stoi(stackInfo[i][0]);
 			temp += rate;
+			if (temp < 0)
+			{
+				temp += 20;
+				rate += 20;
+			}
 			stackInfo[i][0] = to_wstring(temp);
 			wstring tempw = to_wstring(rate);
 			if (rate >= 0)

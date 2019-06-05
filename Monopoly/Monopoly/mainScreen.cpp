@@ -442,6 +442,7 @@ void mainScreen::pressStart()
 		theBank.AccDebt[i] = 0;
 		theBank.AccPay[i] = 0;
 	}
+	theBank.restore();
 	theBank.printMoney();
 	theStack.printTheScreen();
 	theStack.readStackFile("Stacks.txt");

@@ -258,8 +258,8 @@ void OperatingPlayers::GameStart()
 	Position.X = 15;
 	Position.Y = 10;
 	SetConsoleCursorPosition(hOut, Position);
-	theBank.payDebt();
 	wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+	theBank.payDebt();
 	theStack.rateChange("Stacks.txt");
 	theStack.readStackFile("Stacks.txt");
 	theBank.printMoney();
@@ -316,8 +316,9 @@ void OperatingPlayers::GameStart()
 			Position.X = 15;
 			Position.Y = 10;
 			SetConsoleCursorPosition(hOut, Position);
-			theBank.payDebt();
+
 			wcout << L"現在輪到 " << TheMap.GetCurrentPlayer().ID + 1 << L"玩家擲骰子，請按任意鍵擲骰子";
+			theBank.payDebt();
 			
 
 			theStack.rateChange("Stacks.txt");

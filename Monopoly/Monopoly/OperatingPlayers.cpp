@@ -443,7 +443,7 @@ void OperatingPlayers::GameStart()
 				if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
 				{
 					TheMap.GetCurrentPlayer().Stop += 2;
-					TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+					TheMap.GetCurrentPlayer().StopTurn = TheMap.GetRemainingRounds();
 			
 					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
 					TheMap.RefreshEstateLabel();
@@ -464,7 +464,7 @@ void OperatingPlayers::GameStart()
 						SetConsoleCursorPosition(hOut, Position);
 						wcout << L"遇到韓國魚游行，停止行動2回合";
 						TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
-						TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+						TheMap.GetCurrentPlayer().StopTurn = TheMap.GetRemainingRounds();
 						break;
 					case 2:
 						Position.X = 15;
@@ -739,7 +739,7 @@ void OperatingPlayers::GameStart()
 				{
 					
 					TheMap.GetCurrentPlayer().Stop += 2;
-					TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+					TheMap.GetCurrentPlayer().StopTurn = TheMap.GetRemainingRounds();
 
 					TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
 					TheMap.RefreshEstateLabel();
@@ -760,7 +760,7 @@ void OperatingPlayers::GameStart()
 						SetConsoleCursorPosition(hOut, Position);
 						wcout << L"遇到韓國魚游行，停止行動2回合";
 						TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
-						TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+						TheMap.GetCurrentPlayer().StopTurn = TheMap.GetRemainingRounds();
 					
 
 						break;
@@ -804,7 +804,7 @@ void OperatingPlayers::GameStart()
 						wcout << L"不小心出了車禍...";
 						TheMap.GetCurrentPlayer().Money = 0;
 						TheMap.GetCurrentPlayer().Stop = -1;
-						TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+				
 						
 						TheMap.GetCurrentPlayer().OwnedProperties.clear();
 						TheMap.RefreshEstateLabel();
@@ -918,8 +918,7 @@ void OperatingPlayers::GameStart()
 									TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
 									TheMap.GetCurrentPlayer().Money = 0;
 									TheMap.GetCurrentPlayer().Stop = -1;
-									TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
-								
+						
 									TheMap.GetCurrentPlayer().OwnedProperties.clear();
 									TheMap.RefreshEstateLabel();
 								}
@@ -1124,7 +1123,7 @@ void OperatingPlayers::GameStart()
 			if (TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier == 1)
 			{
 				TheMap.GetCurrentPlayer().Stop += 2;
-				TheMap.GetCurrentPlayer().StopTurn=21 - TheMap.GetRemainingRounds();
+				TheMap.GetCurrentPlayer().StopTurn = TheMap.GetRemainingRounds();
 			
 
 				TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
@@ -1146,7 +1145,7 @@ void OperatingPlayers::GameStart()
 					SetConsoleCursorPosition(hOut, Position);
 					wcout << L"遇到韓國魚游行，停止行動2回合";
 					TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 2;
-					TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+					TheMap.GetCurrentPlayer().StopTurn = TheMap.GetRemainingRounds();
 				
 					break;
 				case 2:
@@ -1189,7 +1188,7 @@ void OperatingPlayers::GameStart()
 					wcout << L"不小心出了車禍...";
 					TheMap.GetCurrentPlayer().Money = 0;
 					TheMap.GetCurrentPlayer().Stop = -1;
-					TheMap.GetCurrentPlayer().StopTurn	=21 - TheMap.GetRemainingRounds();
+			
 				
 					TheMap.GetCurrentPlayer().OwnedProperties.clear();
 					TheMap.RefreshEstateLabel();
@@ -1303,7 +1302,7 @@ void OperatingPlayers::GameStart()
 								TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
 								TheMap.GetCurrentPlayer().Money = 0;
 								TheMap.GetCurrentPlayer().Stop = -1;
-								TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+						
 								TheMap.GetCurrentPlayer().OwnedProperties.clear();
 								TheMap.RefreshEstateLabel();
 							}
@@ -1422,7 +1421,7 @@ void OperatingPlayers::GameStart()
 			{
 				TheMap.GetCurrentPlayer().Stop += 2;
 
-				TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+				TheMap.GetCurrentPlayer().StopTurn = TheMap.GetRemainingRounds();
 				TheMap.GetEstateFromPos(TheMap.PlayerList[TheMap.GetCurrentPlayer().ID].Position).HasBarrier = 0;
 				TheMap.RefreshEstateLabel();
 			}
@@ -1442,7 +1441,7 @@ void OperatingPlayers::GameStart()
 					SetConsoleCursorPosition(hOut, Position);
 					wcout << L"遇到韓國魚游行，停止行動2回合";
 					TheMap.GetCurrentPlayer().Stop = TheMap.GetCurrentPlayer().Stop + 3;
-					TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+					TheMap.GetCurrentPlayer().StopTurn = TheMap.GetRemainingRounds();
 					break;
 				case 2:
 					Position.X = 15;
@@ -1484,7 +1483,7 @@ void OperatingPlayers::GameStart()
 					wcout << L"不小心出了車禍...";
 					TheMap.GetCurrentPlayer().Money = 0;
 					TheMap.GetCurrentPlayer().Stop = -1;
-					TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+	
 					TheMap.GetCurrentPlayer().OwnedProperties.clear();
 					TheMap.RefreshEstateLabel();
 					break;
@@ -1597,7 +1596,7 @@ void OperatingPlayers::GameStart()
 								TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money = TheMap.GetOwnerByEstate(TheMap.GetCurrentPlayer().Position).Money + TheMap.GetCurrentPlayer().Money;
 								TheMap.GetCurrentPlayer().Money = 0;
 								TheMap.GetCurrentPlayer().Stop = -1;
-								TheMap.GetCurrentPlayer().StopTurn = 21 - TheMap.GetRemainingRounds();
+						
 								TheMap.GetCurrentPlayer().OwnedProperties.clear();
 								TheMap.RefreshEstateLabel();
 							}

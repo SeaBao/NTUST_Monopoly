@@ -403,7 +403,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 26;
 					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"案任意鍵繼續擲骰子";
+					wcout << L"按任意鍵繼續擲骰子";
 					command = _getch();
 					
 				}
@@ -540,7 +540,7 @@ void OperatingPlayers::GameStart()
 						Position.X = 15;
 						Position.Y = 20;
 						SetConsoleCursorPosition(hOut, Position);
-						wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+						wcout << L"經過起點，獲得2000元  按任意鍵繼續";
 						command = _getch();
 						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 
@@ -831,7 +831,7 @@ void OperatingPlayers::GameStart()
 						Position.X = 15;
 						Position.Y = 20;
 						SetConsoleCursorPosition(hOut, Position);
-						wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+						wcout << L"經過起點，獲得2000元  按任意鍵繼續";
 						command = _getch();
 						TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 
@@ -1013,7 +1013,7 @@ void OperatingPlayers::GameStart()
 				Position.X = 15;
 				Position.Y = 26;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"案任意鍵繼續擲骰子";
+				wcout << L"按任意鍵繼續擲骰子";
 				command = _getch();
 			}
 
@@ -1070,7 +1070,7 @@ void OperatingPlayers::GameStart()
 				Position.X = 15;
 				Position.Y = 26;
 				SetConsoleCursorPosition(hOut, Position);
-				wcout << L"案任意鍵繼續擲骰子";
+				wcout << L"按任意鍵繼續擲骰子";
 				command = _getch();
 
 			}
@@ -1207,7 +1207,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 20;
 					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+					wcout << L"經過起點，獲得2000元  按任意鍵繼續";
 					command = _getch();
 					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 
@@ -1498,7 +1498,7 @@ void OperatingPlayers::GameStart()
 					Position.X = 15;
 					Position.Y = 20;
 					SetConsoleCursorPosition(hOut, Position);
-					wcout << L"經過起點，獲得2000元  案任意鍵繼續";
+					wcout << L"經過起點，獲得2000元  按任意鍵繼續";
 					command = _getch();
 					TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money + 2000;
 

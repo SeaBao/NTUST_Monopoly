@@ -112,7 +112,12 @@ void GameMap::ReadMap(string path)
 				}
 			}
 		}
-		_PlayerTurns = MaxPlayers;
+		
+		int temp = 0;
+		for (auto p : TheMap.PlayerList) {
+			if (p.Stop == 0) temp++;
+		}
+		TheMap._PlayerTurns = temp;
 		file.close();
 	}
 }
@@ -463,6 +468,12 @@ void GameMap::TurnNextRound()
 				}
 			}
 			RemainingRounds--;
+
+			int temp = 0;
+			for (auto p : PlayerList) {
+				if (p.Stop == 0) temp++;
+			}
+			_PlayerTurns = temp;
 		}
 	}
 

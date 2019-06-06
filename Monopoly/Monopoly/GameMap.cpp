@@ -444,60 +444,25 @@ void GameMap::TurnNextRound()
 
 	if (index == -1) throw exception("Wrong Player ID");
 
-	bool isFound = false;
-	while (!isFound) {
-		for (int i = index + 1; i < PlayerList.size(); i++) {
-			if (PlayerList[i].Stop == 0) {
-				_CurrentPlayerID = PlayerList[i].ID;
-				isFound = true;
-				_PlayerTurns--;
-				break;
-			}
-		}
-
-		if (!isFound) {
-			for (int i = 0; i <= index; i++) {
-				if (PlayerList[i].Stop == 0) {
-					_CurrentPlayerID = PlayerList[i].ID;
-					isFound = true;
-					_PlayerTurns--;
-					break;
-				}
-			}
-		}	
-
-		if (!isFound) {
-			for (int i = 0; i < PlayerList.size(); i++) {
-				if (PlayerList[i].Stop > 0) {
-					PlayerList[i].Stop -= 1;
-				}
-			}
-			RemainingRounds--;
-
-			int temp = 0;
-			for (auto p : PlayerList) {
-				if (p.Stop == 0) temp++;
-			}
-			_PlayerTurns = temp;
-		}
+	if (_CurrentPlayerID >= MaxPlayers - 1) {
+		_CurrentPlayerID = 0;
+		RemainingRounds -= 1;
 	}
 
-	if (_PlayerTurns == 0) {
-		RemainingRounds--;
-
-		for (int i = 0; i < PlayerList.size(); i++) {
-			if (PlayerList[i].Stop > 0) {
-				PlayerList[i].Stop -= 1;
-			}
+	for (int i = _CurrentPlayerID + 1; i < MaxPlayers; i++) {
+		if (i == MaxPlayers - 1) {
+			RemainingRounds -= 1;
+			_CurrentPlayerID = 0;
 		}
 
-		int temp = 0;
-		for (auto p : PlayerList) {
-			if (p.Stop == 0) temp++;
+		if (PlayerList[i].Stop > 0) {
+			PlayerList[i].Stop -= 1;
 		}
-		_PlayerTurns = temp;
+		else {
+			_CurrentPlayerID = i;
+			break;
+		}
 	}
-	
 }
 
 Player& GameMap::GetCurrentPlayer()

@@ -222,6 +222,10 @@ void Menu::winningScreen(int who)
 	{
 		wcout << L"恭喜玩家4獲勝!!";
 	}
+	else if (who == 5)
+	{
+		wcout << L"...這是場平局...";
+	}
 	SetCursorPosistion(54, 17);
 	wcout << L"是否重新開始?  是 否";
 	pos.Y = 17;

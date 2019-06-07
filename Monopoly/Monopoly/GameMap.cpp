@@ -448,7 +448,7 @@ void GameMap::TurnNextRound()
 	if (index == -1) throw exception("Wrong Player ID");
 
 	if (_CurrentPlayerID >= MaxPlayers - 1) {
-		_CurrentPlayerID = 0;
+		_CurrentPlayerID = -1;
 		RemainingRounds -= 1;
 	}
 

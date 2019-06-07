@@ -3,6 +3,9 @@
 #include "Bank.h"
 #include "Stack.h"
 #include "mainScreen.h"
+#include "GameMap.h"
+#include "InfoPanel.h"
+#include "OperatingPlayers.h"
 
 Menu theMenu;
 
@@ -222,6 +225,10 @@ void Menu::winningScreen(int who)
 	{
 		wcout << L"恭喜玩家4獲勝!!";
 	}
+	else if (who == 5)
+	{
+		wcout << L"...這是場平局...";
+	}
 	SetCursorPosistion(54, 17);
 	wcout << L"是否重新開始?  是 否";
 	pos.Y = 17;
@@ -245,6 +252,34 @@ void Menu::winningScreen(int who)
 			{
 				pos.X -= 3;
 				SetConsoleCursorPosition(hOut, pos);
+			}
+		}
+		else if (command == 13)//enter
+		{
+			if (pos.X == 72)
+			{
+				theScreen.printMainScreen();
+			}
+			else
+			{
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+
+				system("cls");
+				TheMap.ReadMap("Taiwan.txt");
+				TheMap.PrintMap();
+				PlayerPanel.PrintPanel();
+				for (int i = 0; i < 4; i++)
+				{
+					theBank.AccMoney[i] = 10000;
+					theBank.AccDebt[i] = 0;
+					theBank.AccPay[i] = 0;
+				}
+				theBank.restore();
+				theBank.printMoney();
+				theStack.printTheScreen();
+				theStack.readStackFile("Stacks.txt");
+				OperatingPlayers start;
+				start.GameStart();
 			}
 		}
 		command = _getch();

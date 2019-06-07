@@ -308,7 +308,7 @@ void Bank::payDebt()
 			if (debt > theBank.AccMoney[i])
 			{
 				theBank.AccMoney[i] = 0;
-				TheMap.GetCurrentPlayer().Money = TheMap.GetCurrentPlayer().Money - (debt - theBank.AccMoney[i]);
+				TheMap.PlayerList[i].Money = TheMap.PlayerList[i].Money - (debt - theBank.AccMoney[i]);
 			}
 			else
 			{

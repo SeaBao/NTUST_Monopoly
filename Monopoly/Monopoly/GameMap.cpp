@@ -24,6 +24,9 @@ void GameMap::ReadMap(string path, int maxPlayer)
 	file.open(path);
 
 	if (file.is_open()) {
+		PlayerList.clear();
+		LocationList.clear();
+
 		int rows = 0;
 		bool isFinishLoadingLocation = false;
 		wstring line;
@@ -451,7 +454,6 @@ void GameMap::TurnNextRound()
 
 	for (int i = _CurrentPlayerID + 1; i < MaxPlayers; i++) {
 		if (i == MaxPlayers - 1) {
-			RemainingRounds -= 1;
 			_CurrentPlayerID = 0;
 		}
 

@@ -181,9 +181,13 @@ void Menu::printWord(int y)
 
 void Menu::winningScreen(int who)
 {
-	SetConsoleTextAttribute(hOut, 0 | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-	SetCursorPosistion(50, 13);
-	SetCursorPosistion(50, 14);
+	COORD pos;
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED |BACKGROUND_INTENSITY |FOREGROUND_RED);
+	pos.X = 50;
+	pos.Y = 14;
+	SetConsoleCursorPosition(hOut, pos);
 	for (int i = 0; i < 3; i++)
 	{
 		wcout << L"         ";

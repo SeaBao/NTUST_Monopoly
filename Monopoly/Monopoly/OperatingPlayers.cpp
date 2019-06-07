@@ -223,26 +223,25 @@ void GameEnd()
 			maxMoney = TheMap.PlayerList[i].Money;
 		}
 	}
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD Position;
-	Position.X = 15;
-	Position.Y = 16;
+	//HANDLE hOut;
+	//hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	//COORD Position;
+	//Position.X = 15;
+	//Position.Y = 16;
 	int who;
-	SetConsoleCursorPosition(hOut, Position);
-	wcout << L"勝利者為 ";
+	//SetConsoleCursorPosition(hOut, Position);
+	//wcout << L"勝利者為 ";
 	for (int i = 0; i < 4; i++)
 	{
 		if (maxMoney == TheMap.PlayerList[i].Money)
 		{
-			wcout << i + 1 << " ";
+			//wcout << i + 1 << " ";
 			who = i + 1;
 		}
 	}
-	Position.Y = 18;
-	SetConsoleCursorPosition(hOut, Position); 
-		Menu e;
-	e.winningScreen(who);
+	//Position.Y = 18;
+	//SetConsoleCursorPosition(hOut, Position); 
+	theMenu.winningScreen(who);
 	
 	
 }

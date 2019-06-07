@@ -447,24 +447,27 @@ void GameMap::TurnNextRound()
 
 	if (index == -1) throw exception("Wrong Player ID");
 
-	if (_CurrentPlayerID >= MaxPlayers - 1) {
-		_CurrentPlayerID = 0;
-		RemainingRounds -= 1;
-	}
-
-	for (int i = _CurrentPlayerID + 1; i < MaxPlayers; i++) {
-		if (i == MaxPlayers - 1) {
-			_CurrentPlayerID = 0;
+	bool isFound = false;
+	int tempIndex = _CurrentPlayerID + 1;
+	do
+	{
+		if (tempIndex >= MaxPlayers) {
+			tempIndex = 0;
+			RemainingRounds--;
 		}
 
-		if (PlayerList[i].Stop > 0) {
-			PlayerList[i].Stop -= 1;
+		if (PlayerList[tempIndex].Stop > 0) {
+			if (PlayerList[tempIndex].StopTurn != RemainingRounds) {
+				PlayerList[tempIndex].Stop -= 1;
+			}
 		}
 		else {
-			_CurrentPlayerID = i;
-			break;
+			_CurrentPlayerID = tempIndex;
+			isFound = true;
 		}
-	}
+
+		tempIndex++;
+	} while (!isFound);
 }
 
 Player& GameMap::GetCurrentPlayer()

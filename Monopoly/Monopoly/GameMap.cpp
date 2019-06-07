@@ -456,6 +456,10 @@ void GameMap::TurnNextRound()
 			RemainingRounds--;
 		}
 
+		if (PlayerList[tempIndex].Money < 0) {
+			PlayerList[tempIndex].Stop = -1;
+		}
+
 		if (PlayerList[tempIndex].Stop > 0) {
 			if (PlayerList[tempIndex].StopTurn != RemainingRounds) {
 				PlayerList[tempIndex].Stop -= 1;

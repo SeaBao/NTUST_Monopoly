@@ -411,7 +411,7 @@ void mainScreen::printMainScreen()
 			}
 			else if (pos.Y == 27)
 			{
-
+				pressExp();
 			}
 			else if (pos.Y == 29)
 			{
@@ -553,7 +553,54 @@ void mainScreen::pressRead()
 
 void mainScreen::pressExp()
 {
-
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut, 0 | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	for (int i = 0; i < 37; i++)
+	{
+		pos.Y = i;
+		pos.X = 0;
+		SetConsoleCursorPosition(hOut, pos);
+		for (int j = 0; j <= 142; j++)
+		{
+			cout << " ";
+		}
+	}
+	/*wifstream in("ex.txt");
+	wstring temp;
+	pos.X = 0;
+	pos.Y = 0;
+	SetConsoleCursorPosition(hOut, pos);
+	while (getline(in, temp))
+	{
+		wcout << temp;
+		pos.Y++;
+		SetConsoleCursorPosition(hOut, pos);
+	}
+	char command;
+	command = _getch();
+	printMainScreen();*/
+	pos.Y = 0;
+	pos.X = 0;
+	SetConsoleCursorPosition(hOut, pos);
+	wcout << L"按B使用遙控骰子\n\n";
+	wcout << L"按N使用路障\n\n";
+	wcout << L"按ESC叫出選單\n\n";
+	wcout<< L"基本規則：\n";
+	wcout<< L"　　玩家每回合移動隨機步數(1~6)、\n";
+	wcout<< L"　　經過無人地地產可購買該地產(一地產限一人擁有)、\n";
+	wcout<< L"　　若再次經過地產可升級(至多３次)、\n";
+	wcout<< L"　　經過他人地產需付過路費、\n";
+	wcout<< L"　　20回合制、\n";
+	wcout<< L"　　1~4人遊玩\n\n";
+	wcout<< L"勝利規則：\n";
+	wcout<< L"　　回合結束剩餘金錢最多者、\n";
+	wcout<< L"　　回合未結束除獲勝者其餘人全部破產\n";
+	wcout<< L"\n";
+	wcout<< L"\n\n\n\n\n\n";
+	wcout<< L"...按任意鍵回主選單...\n";
+	char command;
+	command = _getch();
+	printMainScreen(); 
 }
 
 void mainScreen::printWord(int y)

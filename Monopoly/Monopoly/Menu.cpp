@@ -60,6 +60,11 @@ void Menu::printMenu()
 				TheMap.WriteMap("SaveGame.txt");
 				theBank.writeAM();
 				TheMap.WriteMap("store.txt");
+				SetCursorPosistion(113, 29);
+				wcout << L"!!儲存成功!!";
+				Sleep(600);
+				theBank.printWord(0);
+				break;
 			}
 			else if (pos.Y == 31)//進入銀行
 			{

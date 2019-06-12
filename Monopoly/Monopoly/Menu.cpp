@@ -57,6 +57,7 @@ void Menu::printMenu()
 			}
 			else if (pos.Y == 30)//Àx¦s¹CÀ¸
 			{
+				TheMap.WriteMap("SaveGame.txt");
 				theBank.writeAM();
 				TheMap.WriteMap("store.txt");
 			}

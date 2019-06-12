@@ -458,7 +458,7 @@ void OperatingPlayers::GameStart()
 				{
 					srand(static_cast<int>(time(NULL)));
 					int DestinyCase = (rand() % 3) + 1;
-					DestinyCase = 1;
+					
 					switch (DestinyCase)
 					{
 					case 1:
@@ -754,7 +754,7 @@ void OperatingPlayers::GameStart()
 				{
 					srand(static_cast<int>(time(NULL)));
 					int DestinyCase = (rand() % 3) + 1;
-					DestinyCase = 1;
+					
 					switch (DestinyCase)
 					{
 					case 1:
@@ -1139,7 +1139,7 @@ void OperatingPlayers::GameStart()
 			{
 				srand(static_cast<int>(time(NULL)));
 				int DestinyCase = (rand() % 3) + 1;
-				DestinyCase = 1;
+				
 				switch (DestinyCase)
 				{
 				case 1:
@@ -1435,7 +1435,7 @@ void OperatingPlayers::GameStart()
 			{
 				srand(static_cast<int>(time(NULL)));
 				int DestinyCase = (rand() % 3) + 1;
-				DestinyCase = 1;
+				
 				switch (DestinyCase)
 				{
 				case 1:

@@ -411,7 +411,7 @@ void mainScreen::printMainScreen()
 			}
 			else if (pos.Y == 27)
 			{
-
+				pressExp();
 			}
 			else if (pos.Y == 29)
 			{
@@ -553,7 +553,32 @@ void mainScreen::pressRead()
 
 void mainScreen::pressExp()
 {
-
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut, 0 | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	for (int i = 0; i < 37; i++)
+	{
+		pos.Y = i;
+		pos.X = 0;
+		SetConsoleCursorPosition(hOut, pos);
+		for (int j = 0; j <= 142; j++)
+		{
+			cout << " ";
+		}
+	}
+	wifstream in("ex.txt");
+	wstring temp;
+	pos.X = 0;
+	pos.Y = 0;
+	SetConsoleCursorPosition(hOut, pos);
+	while (getline(in, temp))
+	{
+		wcout << temp;
+		pos.Y++;
+		SetConsoleCursorPosition(hOut, pos);
+	}
+	char command;
+	command = _getch();
+	printMainScreen();
 }
 
 void mainScreen::printWord(int y)

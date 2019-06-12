@@ -23,7 +23,7 @@ void Menu::printMenu()
 	SetCursorPosistion(98, 32);
 	wcout << L"4.股票市場";
 	SetCursorPosistion(98, 33);
-	wcout << L"5.離開遊戲";
+	wcout << L"5.回主選單";
 	pos.Y = 29;
 	SetConsoleCursorPosition(hOut, pos);
 	char command;
@@ -58,6 +58,7 @@ void Menu::printMenu()
 			else if (pos.Y == 30)//儲存遊戲
 			{
 				theBank.writeAM();
+				TheMap.WriteMap("store.txt");
 			}
 			else if (pos.Y == 31)//進入銀行
 			{
@@ -69,10 +70,10 @@ void Menu::printMenu()
 				theStack.buyStacks();
 				break;
 			}
-			else if (pos.Y == 33)//離開遊戲
+			else if (pos.Y == 33)//回主選單
 			{
 				theBank.restore();
-				exit(1);
+				theScreen.printMainScreen();
 			}
 		}
 		command = _getch();
@@ -94,7 +95,7 @@ void Menu::printWord(int y)
 		SetCursorPosistion(98, 32);
 		wcout << L"4.股票市場";
 		SetCursorPosistion(98, 33);
-		wcout << L"5.離開遊戲";
+		wcout << L"5.回主選單";
 		SetCursorPosistion(98, 29);
 	}
 	else if (y == 30)
@@ -111,7 +112,7 @@ void Menu::printWord(int y)
 		SetCursorPosistion(98, 32);
 		wcout << L"4.股票市場";
 		SetCursorPosistion(98, 33);
-		wcout << L"5.離開遊戲";
+		wcout << L"5.回主選單";
 		SetCursorPosistion(98, 30);
 	}
 	else if(y == 31)
@@ -127,7 +128,7 @@ void Menu::printWord(int y)
 		SetCursorPosistion(98, 32);
 		wcout << L"4.股票市場";
 		SetCursorPosistion(98, 33);
-		wcout << L"5.離開遊戲";
+		wcout << L"5.回主選單";
 		SetCursorPosistion(98, 31);
 	}
 	else if (y == 32)
@@ -143,7 +144,7 @@ void Menu::printWord(int y)
 		wcout << L"4.股票市場";
 		SetCursorPosistion(98, 33);
 		SetConsoleTextAttribute(hOut, 0 | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-		wcout << L"5.離開遊戲";
+		wcout << L"5.回主選單";
 		SetCursorPosistion(98, 32);
 	}
 	else if (y == 33)
@@ -158,7 +159,7 @@ void Menu::printWord(int y)
 		wcout << L"4.股票市場";
 		SetCursorPosistion(98, 33);
 		SetConsoleTextAttribute(hOut, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-		wcout << L"5.離開遊戲";
+		wcout << L"5.回主選單";
 		SetConsoleTextAttribute(hOut, 0 | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 		SetCursorPosistion(98, 33);
 	}

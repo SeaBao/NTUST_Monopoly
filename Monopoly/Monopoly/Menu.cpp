@@ -57,6 +57,7 @@ void Menu::printMenu()
 			}
 			else if (pos.Y == 30)//儲存遊戲
 			{
+				TheMap.WriteMap("SaveGame.txt");
 				theBank.writeAM();
 			}
 			else if (pos.Y == 31)//進入銀行
